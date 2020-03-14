@@ -4,7 +4,7 @@
 secretBlog的springboot版本
 
 #### 软件架构
-软件架构说明
+springboot+mybatis
 
 
 #### 安装教程
