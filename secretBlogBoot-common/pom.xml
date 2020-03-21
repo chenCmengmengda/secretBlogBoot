@@ -16,10 +16,10 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <!-- spring-security -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-security</artifactId>-->
+        <!--</dependency>-->
         <!--集成redis，client改用jedis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,6 +50,11 @@
         </dependency>
         <!--springboot 集成Mybatis所需jar配置 start -->
         <!--支持使用 JDBC 访问数据库 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.0.5</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -251,6 +256,13 @@
             <groupId>commons-net</groupId>
             <artifactId>commons-net</artifactId>
             <version>${commons-net.version}</version>
+        </dependency>
+
+        <!-- 热部署模块 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>    <!-- 这个需要为 true 热部署才有效 -->
         </dependency>
 
 

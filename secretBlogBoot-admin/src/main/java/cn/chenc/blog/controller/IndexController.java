@@ -2,7 +2,7 @@ package cn.chenc.blog.controller;
 
 import cn.chenc.blog.framework.pojo.Result;
 import cn.chenc.blog.utils.ResultUtil;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,15 +27,15 @@ public class IndexController {
         return "index";
     }
 */
-    @RequestMapping("/userinfo")
-    @ResponseBody
-    public Result userinfo(){
-        String username= SecurityContextHolder.getContext().getAuthentication().getName();
-        Map<String,String> map=new HashMap<>();
-        map.put("username",username);
-
-        return Result.ok(map);
-    }
+//    @RequestMapping("/userinfo")
+//    @ResponseBody
+//    public Result userinfo(){
+//        String username= SecurityContextHolder.getContext().getAuthentication().getName();
+//        Map<String,String> map=new HashMap<>();
+//        map.put("username",username);
+//
+//        return Result.ok(map);
+//    }
 
     @RequestMapping("/loginSuccess")
     @ResponseBody
@@ -63,6 +63,19 @@ public class IndexController {
     @RequestMapping("/{page}")
     public ModelAndView showpage(@PathVariable String page) {
 
-        return ResultUtil.view("admin/"+page);
+        return ResultUtil.view(page);
+    }
+
+
+
+    @RequestMapping("/index")
+    public ModelAndView index() {
+
+        return ResultUtil.view("index");
+    }
+
+    @RequestMapping("/pages/**")
+    public void pages() {
+    //    return ResultUtil.view("/page/chart/chart1");
     }
 }

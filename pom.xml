@@ -10,6 +10,7 @@
     <modules>
         <module>secretBlogBoot-admin</module>
         <module>secretBlogBoot-common</module>
+        <module>secretBlogBoot-Generation</module>
     </modules>
     <packaging>pom</packaging>
 
