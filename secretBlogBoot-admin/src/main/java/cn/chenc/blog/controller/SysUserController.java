@@ -2,7 +2,7 @@ package cn.chenc.blog.controller;
 
 
 import cn.chenc.blog.business.service.SysUserService;
-import cn.chenc.blog.framework.pojo.ResponseVO;
+import cn.chenc.blog.framework.object.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

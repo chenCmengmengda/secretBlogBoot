@@ -3,8 +3,8 @@ package cn.chenc.blog.utils;
 
 import cn.chenc.blog.business.consts.CommonConst;
 import cn.chenc.blog.business.enums.ResponseStatus;
-import cn.chenc.blog.framework.pojo.PageResult;
-import cn.chenc.blog.framework.pojo.ResponseVO;
+import cn.chenc.blog.framework.object.PageResult;
+import cn.chenc.blog.framework.object.ResponseVO;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.servlet.ModelAndView;
 

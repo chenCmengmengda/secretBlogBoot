@@ -1,6 +1,6 @@
 package cn.chenc.blog.controller;
 
-import cn.chenc.blog.framework.pojo.Result;
+import cn.chenc.blog.framework.object.Result;
 import cn.chenc.blog.utils.ResultUtil;
 //import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by 陈_C on 2018/7/25.

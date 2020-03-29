@@ -1,7 +1,7 @@
 package cn.chenc.blog.business.service;
 
 import cn.chenc.blog.business.entity.SysUser;
-import cn.chenc.blog.framework.pojo.ResponseVO;
+import cn.chenc.blog.framework.object.ResponseVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

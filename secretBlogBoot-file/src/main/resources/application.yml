@@ -1,0 +1,22 @@
+## 端口
+server:
+  port: 8082
+## 日志
+logging:
+  level:
+    cn.javabb: DEBUG
+spring:
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy/MM/dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  devtools:
+    restart:
+      enabled: true
+## 自定义设置
+app:
+#  allowDomain: http://127.0.0.1:8081;http://127.0.0.1:8086;http://59.110.236.115;http://59.110.236.115:86;
+  allowIps: 127.0.0.1

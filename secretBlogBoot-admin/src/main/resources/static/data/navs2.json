@@ -246,7 +246,25 @@
     "spread": false,
     "children": [
       {
-        "title": "系统设置",
+        "title": "用户管理",
+        "href": "pages/system/user",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "角色管理",
+        "href": "pages/system/role",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "权限管理",
+        "href": "pages/system/permission",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "系统配置",
         "href": "pages/system/setup",
         "icon": "&#xe62e;",
         "spread": false
@@ -254,6 +272,24 @@
       {
         "title": "日志列表",
         "href": "pages/system/log",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "文件管理",
+        "href": "pages/system/file",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "字典管理",
+        "href": "pages/system/dictionary",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "友情链接",
+        "href": "pages/system/friend-link",
         "icon": "&#xe62e;",
         "spread": false
       },

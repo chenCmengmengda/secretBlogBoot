@@ -1,4 +1,4 @@
-package cn.chenc.blog.framework.pojo;
+package cn.chenc.blog.framework.object;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

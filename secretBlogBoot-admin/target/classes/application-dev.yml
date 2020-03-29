@@ -6,9 +6,13 @@ server:
 spring:
     profiles:
         include: [center-dev]
-    # 指定默认MimeMessage的编码，默认为: UTF-8
+    devtools:
+        restart:
+            enabled: true #热部署
+            additional-paths: src/main/java
+            exclude: static/**
     mail:
-        default-encoding: UTF-8
+        default-encoding: UTF-8  # 指定默认MimeMessage的编码，默认为: UTF-8
         # 指定SMTP server使用的协议，默认为: smtp
         protocol: smtp
         # 指定SMTP server host.

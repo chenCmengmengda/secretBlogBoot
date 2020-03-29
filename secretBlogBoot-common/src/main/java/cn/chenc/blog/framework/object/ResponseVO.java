@@ -1,4 +1,4 @@
-package cn.chenc.blog.framework.pojo;
+package cn.chenc.blog.framework.object;
 
 import cn.chenc.blog.business.enums.ResponseStatus;
 import com.alibaba.fastjson.JSONObject;

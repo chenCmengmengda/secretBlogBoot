@@ -14,5 +14,23 @@
         <result column="update_time" property="updateTime" />
         <result column="role_id" property="roleId" />
     </resultMap>
+    <resultMap id="selectSysUserAllMap" type="cn.chenc.blog.business.entity.SysUserCustom" extends="BaseResultMap">
+        <collection property="sysRole" ofType="cn.chenc.blog.business.entity.SysRole" column="role_id">
+            <id column="rid" property="id"></id>
+            <result column="rolename" property="rolename"></result>
+            <result column="remarks" property="remarks"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selectSysUserListPage" resultMap="selectSysUserAllMap">
+        select s.*,
+        r.id as rid,
+        r.rolename,
+        r.remarks
+        from sys_user s
+        LEFT JOIN sys_role as r on s.role_id=r.id
+    </select>
+
+
 
 </mapper>

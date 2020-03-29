@@ -41,7 +41,7 @@
 
                 var articleTable = table.render({
                     elem: "#tableId",
-                    url: okMock.api.article.list,
+                    url: '/sysConfig/list',
                     limit: 20,
                     page: true,
                     even: true,
@@ -49,17 +49,32 @@
                     size: "sm",
                     cols: [[
                         {type: "checkbox", fixed: "left"},
-                        {field: "id", title: "GUID", width: 280, sort: true},
-                        {field: "title", title: "标题", width: 350},
-                        {field: "url", title: "链接", width: 250, templet: "#urlTpl"},
-                        {field: "publisher", title: "发布者", width: 100},
-                        {field: "readSize", title: "阅读量", width: 80},
-                        {field: "isTop", title: "是否置顶", width: 100, align: "center", templet: "#topTpl"},
-                        {field: "status", title: "发布状态", width: 110, align: "center", templet: "#statusTpl"},
+                        {field: "id", title: "id", width: 60, sort: true},
+                        {field: "configName", title: "配置名称", width: 150},
+                        {field: "configType", title: "配置类型", width: 150},
+                        {field: "configCode", title: "配置键", width: 150},
+                        {field: "configValue", title: "配置值", width: 150},
+                        {field: "createTime", title: "创建时间", width: 150},
+                        {field: "updateTime", title: "更新时间", width: 150},
                         {title: "操作", width: 100, align: "center", fixed: "right", templet: "#operationTpl"}
                     ]],
                     done: function (res, curr, count) {
                         console.log(res, curr, count)
+                    },
+                    request: {
+                        pageName: 'page', //页码的参数名称，默认：page
+                        limitName: 'size' //每页数据量的参数名，默认：limit
+                    },
+                    response: {
+                        statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+                    },
+                    parseData: function(res){ //将原始数据解析成 table 组件所规定的数据
+                        return {
+                            "code": res.status, //解析接口状态
+                            "msg": res.message, //解析提示文本
+                            "count": res.data.total, //解析数据长度
+                            "data": res.data.records //解析数据列表
+                        };
                     }
                 });
 
@@ -103,7 +118,7 @@
                 function batchEnabled() {
                     okLayer.confirm("确定要批量上架吗？", function (index) {
                         layer.close(index);
-                        var idsStr = okUtils.table.batchCheck(table);
+                        var idsStr = okUtils.tableBatchCheck(table);
                         if (idsStr) {
                             okUtils.ajax("/article/batchNormal", "post", {idsStr: idsStr}).done(function (response) {
                                 console.log(response);
@@ -124,7 +139,7 @@
                                 console.log(response);
                                 okUtils.table.successMsg("批量下架成功");
                             }).fail(function (error) {
-                                console.log(error)
+                                console.log(error);
                             });
                         }
                     });
@@ -133,11 +148,11 @@
                 function batchDel() {
                     okLayer.confirm("确定要批量删除吗？", function (index) {
                         layer.close(index);
-                        var idsStr = okUtils.table.batchCheck(table);
+                        var idsStr = okUtils.tableBatchCheck(table);
                         if (idsStr) {
-                            okUtils.ajax("/article/batchDel", "post", {idsStr: idsStr}).done(function (response) {
+                            okUtils.ajax("/sysConfig/del", "post", {ids: idsStr}).done(function (response) {
                                 console.log(response);
-                                okUtils.table.successMsg("批量删除成功");
+                                okUtils.tableSuccessMsg("批量删除成功");
                             }).fail(function (error) {
                                 console.log(error)
                             });
@@ -146,22 +161,22 @@
                 }
 
                 function add() {
-                    okLayer.open("添加文章", "article-add.html", "90%", "90%", null, function () {
+                    okLayer.open("添加系统配置", "setup-add", "90%", "90%", null, function () {
                         articleTable.reload();
                     })
                 }
 
                 function edit(id) {
-                    okLayer.open("编辑文章", "article-edit.html?id=" + id, "90%", "90%", null, function () {
+                    okLayer.open("修改系统配置", "setup-edit?id="+id, "90%", "90%", null, function () {
                         articleTable.reload();
                     })
                 }
 
                 function del(id) {
                     okLayer.confirm("确定要删除吗？", function () {
-                        okUtils.ajax("/article/batchDel", "post", {idsStr: id}).done(function (response) {
+                        okUtils.ajax("/sysConfig/del", "post", {ids: id}).done(function (response) {
                             console.log(response);
-                            okUtils.table.successMsg("删除成功");
+                            okUtils.tableSuccessMsg("删除成功");
                         }).fail(function (error) {
                             console.log(error)
                         });
@@ -175,7 +190,7 @@
                 <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="batchEnabled">批量上架</button>
                 <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="batchDisabled">批量下架</button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchDel">批量删除</button>
-                <button class="layui-btn layui-btn-sm" lay-event="add">添加文章</button>
+                <button class="layui-btn layui-btn-sm" lay-event="add">添加配置</button>
             </div>
         </script>
         <!-- 链接模板 -->

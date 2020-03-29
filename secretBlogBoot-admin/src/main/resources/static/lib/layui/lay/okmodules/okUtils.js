@@ -5,7 +5,7 @@ layui.define(["layer"], function (exprots) {
         /**
          * 是否前后端分离
          */
-        isFrontendBackendSeparate: true,
+        isFrontendBackendSeparate: false,
         /**
          * 服务器地址
          */
@@ -52,13 +52,13 @@ layui.define(["layer"], function (exprots) {
                     }
                 },
                 success: function (data) {
-                    if (data.code == 0) {
+                    if (data.status == 200) {
                         // 业务正常
                         deferred.resolve(data)
                     } else {
                         // 业务异常
-                        layer.msg(data.msg, {icon: 7, time: 2000});
-                        deferred.reject("okUtils.ajax warn: " + data.msg);
+                        layer.msg(data.message, {icon: 7, time: 2000});
+                        deferred.reject("okUtils.ajax warn: " + data.message);
                     }
                 },
                 complete: function () {
@@ -131,6 +131,36 @@ layui.define(["layer"], function (exprots) {
                 if (new RegExp("(" + k + ")").test(fmt))
                     fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
+        },
+        location: {
+            /**
+             * 获取当前所有请求参数集
+             * 返回数组
+             */
+            getRequest: function () {
+                var url = location.search; //获取url中"?"符后的字串
+                var theRequest = new Object();
+                if (url.indexOf("?") != -1) {
+                    var str = url.substr(1);
+                    strs = str.split("&");
+                    for (var i = 0; i < strs.length; i++) {
+                        theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);
+                    }
+                }
+                return theRequest;
+            },
+            /**
+             * 根据键查询url请求参数值
+             * @returns {*}
+             *  url?kay=value
+             */
+            getRequestByKey: function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return decodeURI(r[2]);
+                return null;
+
+            },
         },
         number: {
             /**

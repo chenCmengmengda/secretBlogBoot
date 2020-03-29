@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.chenc.blog.business.mapper.SysPermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.chenc.blog.business.entity.SysPermission">
+        <id column="id" property="id" />
+        <result column="pid" property="pid" />
+        <result column="type" property="type" />
+        <result column="title" property="title" />
+        <result column="description" property="description" />
+        <result column="href" property="href" />
+        <result column="code" property="code" />
+        <result column="status" property="status" />
+        <result column="fontFamily" property="fontFamily" />
+        <result column="icon" property="icon" />
+        <result column="spread" property="spread" />
+
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="cn.chenc.blog.business.entity.SysPermissionCustom">
+        <id column="id" property="id" />
+        <result column="pid" property="pid" />
+        <result column="type" property="type" />
+        <result column="title" property="title" />
+        <result column="description" property="description" />
+        <result column="href" property="href" />
+        <result column="code" property="code" />
+        <result column="status" property="status" />
+        <result column="fontFamily" property="fontFamily" />
+        <result column="icon" property="icon" />
+        <result column="spread" property="spread" />
+        <association property="parentPermission" column="pid" select="selectParentPermission" >
+        </association>
+    </resultMap>
+
+    <!-- 权限树返回结构 -->
+    <resultMap extends="BaseResultMap2" type="cn.chenc.blog.business.entity.SysPermissionCustom" id="ResultMap">
+        <collection property="children" select="selectChildPermission" column="id" ofType="cn.chenc.blog.business.entity.SysPermissionCustom" >
+
+        </collection>
+    </resultMap>
+
+    <select id="selectSysPermissionListPage" resultMap="BaseResultMap2">
+        select * from sys_permission
+    </select>
+
+    <!-- 查询子权限 -->
+    <select id="selectChildPermission" parameterType="int" resultMap="ResultMap" >
+        select * from sys_permission where pid = #{id} and status = 0
+    </select>
+
+    <!-- 查询权限树 -->
+    <select id="selectTreePermission" resultMap="ResultMap" >
+        select * from sys_permission where pid is null and status = 0
+    </select>
+
+    <!-- 查询父级权限 -->
+    <select id="selectParentPermission" parameterType="int" resultType="cn.chenc.blog.business.entity.SysPermissionCustom">
+        select * from sys_permission where id = #{pid}
+    </select>
+
+</mapper>

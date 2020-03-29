@@ -3,9 +3,26 @@
 #### 介绍
 secretBlog的springboot版本
 
-#### 软件架构
-springboot+mybatis
+主要实现功能:
 
+* 权限管理：完备的系统权限管理，包括系统用户，角色，权限，菜单。（未完成）
+
+* 内容管理：管理系统用户所有文章，包括帖子、博客及文章评论。（未完成）
+
+* 文件管理：提供多种方式（本地，七牛，其他OSS）的文件管理和存储方式。（以实现本地存储，可进行新建文件夹、上传文件、重命名、删除）
+
+* 日志管理：用于记录用户对系统的操作。
+
+#### 软件架构
+springboot
+
+mybatis-plus
+
+redis
+
+mysql 5.7
+
+后台采用OK-ADMIN模板
 
 #### 安装教程
 
@@ -26,12 +43,16 @@ springboot+mybatis
 3.  提交代码
 4.  新建 Pull Request
 
+### 致谢
 
-#### 码云特技
+本项目参考他人的代码，感谢各位大神的付出！
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5.  码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+* 广大的开源爱好者
+
+* [ok-admin](https://www.baidu.com/s?ie=UTF-8&wd=ok-admin) 一款开源的layui后台管理模板
+
+* [javabb-fs](https://gitee.com/imqinbao/javabb-fs) 文件服务器，支持本地和第三方云存储
+
+* [OneBlog](https://gitee.com/yadong.zhang/DBlog) 一个简洁美观、功能强大并且自适应的Java博客。
+
+待续...
