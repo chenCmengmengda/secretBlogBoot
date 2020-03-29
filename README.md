@@ -1,5 +1,13 @@
 # secretBlogBoot
 
+![JDK](https://img.shields.io/badge/JDK-1.8-green.svg)
+![Maven](https://img.shields.io/badge/Maven-3.6.1-green.svg)
+![MySQL](https://img.shields.io/badge/MySQL-5.7-green.svg)
+![Redis](https://img.shields.io/badge/Redis-3.2.100-green.svg)
+[![license](https://img.shields.io/badge/license-GPL%20v3-yellow.svg)](https://gitee.com/secret_C/secretBlogBoot/blob/master/LICENSE)
+
+---
+
 #### 介绍
 secretBlog的springboot版本
 
