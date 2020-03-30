@@ -3,6 +3,7 @@ package cn.chenc.blog.business.service;
 import cn.chenc.blog.business.entity.SysUser;
 import cn.chenc.blog.framework.object.ResponseVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * <p>
@@ -12,7 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author chenc
  * @since 2020-03-21
  */
-public interface SysUserService extends IService<SysUser> {
+public interface SysUserService extends IService<SysUser>, UserDetailsService {
 
     ResponseVO selectSysUserListPage(int page,int size);
 

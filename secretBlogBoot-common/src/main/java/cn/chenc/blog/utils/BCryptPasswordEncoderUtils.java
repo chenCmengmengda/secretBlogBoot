@@ -1,18 +1,20 @@
 package cn.chenc.blog.utils;
 
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class BCryptPasswordEncoderUtils {
-//    private static BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
-//    public static String encodePassword(String password){
-//        return bCryptPasswordEncoder.encode(password);
-//    }
-//
-//    public static void main(String[] args) {
-//        String password="123";
-//        String pwd = encodePassword(password);
-//        //$2a$10$tJHudmJh6MRPdiL7mv0yfe0nZJbDHuhl7sSTnqNC4DauMik9ppi4K
-//        //$2a$10$Ce8LB3jdYDZ2f6HB281zA.4eC7v6ziJdK8MMWg0Yu8ETMg5ToMpIe
-//        System.out.print(pwd.length());
-//    }
+    private static BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+    public static String encodePassword(String password){
+        return bCryptPasswordEncoder.encode(password);
+    }
+
+    public static void main(String[] args) {
+        String password="111111";
+        String pwd = encodePassword(password);
+        System.out.println(pwd);
+        //$2a$10$tJHudmJh6MRPdiL7mv0yfe0nZJbDHuhl7sSTnqNC4DauMik9ppi4K
+        //$2a$10$Ce8LB3jdYDZ2f6HB281zA.4eC7v6ziJdK8MMWg0Yu8ETMg5ToMpIe
+        //111111 : $2a$10$u00C/3gAW6EBBpZjw2mwIeRFicjpp9EwwxNBqjyq7sEJRdX9Z2pte
+        System.out.print(pwd.length());
+    }
 }
