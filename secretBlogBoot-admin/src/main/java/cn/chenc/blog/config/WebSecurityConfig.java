@@ -111,7 +111,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected RememberMeServices rememberMeServices(){
         PersistentTokenBasedRememberMeServices rememberMeServices =
                 new PersistentTokenBasedRememberMeServices("INTERNAL_SECRET_KEY", userService,getPersistentTokenRepository());
-//INTERNAL_SECRET_KEY
+
         // 该参数不是必须的，默认值为 "remember-me", 但如果设置必须和页面复选框的 name 一致
         rememberMeServices.setParameter("remember-me");
         return rememberMeServices;
