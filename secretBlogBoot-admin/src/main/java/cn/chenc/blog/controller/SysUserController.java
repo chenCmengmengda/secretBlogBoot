@@ -2,11 +2,13 @@ package cn.chenc.blog.controller;
 
 
 import cn.chenc.blog.business.annoation.Operation;
+import cn.chenc.blog.business.consts.SessionConst;
 import cn.chenc.blog.business.entity.SysUser;
 import cn.chenc.blog.business.service.SysUserService;
 import cn.chenc.blog.framework.object.ResponseVO;
 import cn.chenc.blog.utils.BCryptPasswordEncoderUtils;
 import cn.chenc.blog.utils.ResultUtil;
+import cn.chenc.blog.utils.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,11 +17,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * <p>
@@ -36,16 +42,24 @@ public class SysUserController {
     private SysUserService sysUserService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private RememberMeServices rememberMeServices;
+
 
     @Operation(name="用户登录")
     @RequestMapping("/login")
     @ResponseBody
-    public ResponseVO login(SysUser sysUser, HttpServletRequest request){
-
+    public ResponseVO login(SysUser sysUser, HttpServletRequest request, HttpServletResponse response){
+        String kaptcha = request.getParameter("kaptcha");
+        String sessionKaptcha=SessionUtil.getKaptcha();
+        if(sessionKaptcha == null || sessionKaptcha.equals("") || !sessionKaptcha.equals(kaptcha)){
+            return ResultUtil.error("验证码错误");
+        }
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(sysUser.getUsername(), sysUser.getPassword());
         try {
             Authentication authentication = authenticationManager.authenticate(token);
+            rememberMeServices.loginSuccess(request,response,authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (UsernameNotFoundException e){//处理登录异常
             return ResultUtil.error(e.getMessage());

@@ -23,7 +23,7 @@
             </div>
             <div class="layui-form-item input-item captcha-box">
                 <label for="captcha">验证码</label>
-                <input type="text" lay-verify="required|captcha" name="captcha" placeholder="请输入验证码" autocomplete="off" id="captcha" maxlength="4" class="layui-input">
+                <input type="text" lay-verify="required|kaptcha" name="kaptcha" placeholder="请输入验证码" autocomplete="off" id="captcha" maxlength="4" class="layui-input">
                 <div class="img ok-none-select" id="captchaImg">
                     <img alt="点击获取验证码" id="img-kaptcha" src="/getKaptcha" style="cursor:pointer;height: 36px;width: 100px;">
                 </div>
@@ -32,8 +32,8 @@
                 <button class="layui-btn layui-block" lay-filter="login" lay-submit="">登录</button>
             </div>
             <div class="login-link">
-                <a href="register.html">注册</a>
-                <a href="forget.html">忘记密码?</a>
+                <laber><input type="checkbox" lay-skin="primary" name="remember-me"  value="on">记住 下次自动登录</laber>
+                <a href="forget">忘记密码?</a>
             </div>
         </form>
         <!-- 遮罩层 -->
