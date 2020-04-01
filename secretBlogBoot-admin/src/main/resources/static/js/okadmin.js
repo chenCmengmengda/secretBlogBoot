@@ -310,7 +310,7 @@ layui.use(["element", "layer", "okUtils", "okTab", "okLayer", "okContextMenu", "
 		okLayer.confirm("确定要退出吗？", function (index) {
 			okTab.removeTabStorage(function (res) {
 				okTab.removeTabStorage();
-				window.location = "pages/login.html";
+				window.location = "/sysUser/logout";
 			});
 		});
 	});
