@@ -43,5 +43,11 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         return ResultUtil.success(list);
     }
 
+    @Override
+    public ResponseVO selectMenu(){
+        List<SysPermissionCustom> list=sysPermissionMapper.selectMenu();
+        return ResultUtil.success(list);
+    }
+
 
 }

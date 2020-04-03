@@ -12,7 +12,7 @@
         <result column="href" property="href" />
         <result column="code" property="code" />
         <result column="status" property="status" />
-        <result column="fontFamily" property="fontFamily" />
+        <result column="font_family" property="fontFamily" />
         <result column="icon" property="icon" />
         <result column="spread" property="spread" />
 
@@ -27,7 +27,7 @@
         <result column="href" property="href" />
         <result column="code" property="code" />
         <result column="status" property="status" />
-        <result column="fontFamily" property="fontFamily" />
+        <result column="font_family" property="fontFamily" />
         <result column="icon" property="icon" />
         <result column="spread" property="spread" />
         <association property="parentPermission" column="pid" select="selectParentPermission" >
@@ -41,6 +41,13 @@
         </collection>
     </resultMap>
 
+    <!-- 返回菜单树结构 -->
+    <resultMap extends="BaseResultMap" type="cn.chenc.blog.business.entity.SysPermissionCustom" id="ResultMapMenu">
+        <collection property="children" select="selectChildMenu" column="id" ofType="cn.chenc.blog.business.entity.SysPermissionCustom" >
+
+        </collection>
+    </resultMap>
+
     <select id="selectSysPermissionListPage" resultMap="BaseResultMap2">
         select * from sys_permission
     </select>
@@ -49,6 +56,16 @@
     <select id="selectChildPermission" parameterType="int" resultMap="ResultMap" >
         select * from sys_permission where pid = #{id} and status = 0
     </select>
+
+    <!-- 查询子菜单 -->
+    <select id="selectChildMenu" parameterType="int" resultMap="ResultMapMenu" >
+        select * from sys_permission where pid = #{id} and status = 0 and type=0
+    </select>
+    <select id="selectMenu" resultMap="ResultMapMenu" >
+        select * from sys_permission where pid is null and status = 0
+    </select>
+
+
 
     <!-- 查询权限树 -->
     <select id="selectTreePermission" resultMap="ResultMap" >

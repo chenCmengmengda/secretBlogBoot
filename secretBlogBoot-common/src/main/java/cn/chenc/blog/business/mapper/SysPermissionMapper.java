@@ -26,4 +26,6 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
     public IPage<SysPermissionCustom> selectSysPermissionListPage(IPage page, @Param(Constants.WRAPPER) Wrapper<?> queryWrapper);
 
     public List<SysPermissionCustom> selectTreePermission();
+
+    public List<SysPermissionCustom> selectMenu();
 }

@@ -46,11 +46,11 @@
 			size: "sm",
 			cols: [[
 				{type: "checkbox"},
-				{field: "id", title: "ID", width: 170, sort: true},
+				{field: "id", title: "ID", width: 60, sort: true},
 				{field: "rolename", title: "角色名", width: 100},
-				{field: "remarks", title: "备注", width: 100},
+				{field: "remarks", title: "备注", width: 200},
 				{field: "status", title: "状态", width: 85, templet: "#statusTpl"},
-				{field: "createTime", title: "创建时间", width: 150},
+				{field: "createTime", title: "创建时间", width: 200},
 				{title: "操作", width: 80, align: "center", templet: "#operationTpl"}
 			]],
 			done: function (res, curr, count) {
@@ -106,7 +106,7 @@
 		});
 
 		function add() {
-			okLayer.open("添加角色", "role-add.html", "90%", "90%", null, function () {
+			okLayer.open("添加角色", "role-add", "90%", "90%", null, function () {
 				roleTable.reload();
 			})
 		}
@@ -116,7 +116,7 @@
 				layer.close(index);
 				let idsStr = okUtils.tableBatchCheck(table);
 				if (idsStr) {
-					okUtils.ajax("/role/deleteRole", "delete", {idsStr: idsStr}, true).done(function (response) {
+					okUtils.ajax("/sysRole/del", "get", {ids: idsStr}, true).done(function (response) {
 						okUtils.tableSuccessMsg(response.msg);
 					}).fail(function (error) {
 						console.log(error)
@@ -126,15 +126,15 @@
 		}
 
 		function edit(id) {
-			okLayer.open("编辑角色", "role-edit.html?id=" + id, "90%", "90%", null, function () {
+			okLayer.open("编辑角色", "role-edit?id=" + id, "90%", "90%", null, function () {
 				roleTable.reload();
 			})
 		}
 
 		function del(id) {
 			okLayer.confirm("确定要删除吗？", function () {
-				okUtils.ajax("/role/deleteRole", "delete", {idsStr: id}, true).done(function (response) {
-					okUtils.tableSuccessMsg(response.msg);
+				okUtils.ajax("/sysRole/del", "get", {ids: id}, true).done(function (response) {
+					okUtils.tableSuccessMsg(response.message);
 				}).fail(function (error) {
 					console.log(error)
 				});

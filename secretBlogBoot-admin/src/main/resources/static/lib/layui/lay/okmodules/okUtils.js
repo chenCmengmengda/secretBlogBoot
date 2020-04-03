@@ -85,11 +85,40 @@ layui.define(["layer"], function (exprots) {
             if (rows > 0) {
                 var idsStr = "";
                 for (var i = 0; i < checkStatus.data.length; i++) {
-                    idsStr += checkStatus.data[i].id + ",";
+                    if(i != checkStatus.data.length-1) {
+                        idsStr += checkStatus.data[i].id + ",";
+                    } else{
+                        idsStr += checkStatus.data[i].id
+                    }
                 }
                 return idsStr;
             } else {
                 layer.msg("未选择有效数据", {offset: "t", anim: 6});
+            }
+        },
+        treeChecked: function(treeData){
+            console.log(treeData);
+            console.log(treeData.length==0);
+
+            if(treeData.length==0){
+                return "";
+            }
+            if(treeData.length>0){
+                var id = "";
+                $.each(treeData, function (index, item) {
+
+                    if (id != "" ) {
+                        id = id + "," + item.id;
+                    }
+                    else {
+                        id = item.id;
+                    }
+                    var i = okUtils.treeChecked(item.children);//递归获取树id
+                    if (i != "") {
+                        id = id + "," + i;
+                    }
+                });
+                return id;
             }
         },
         /**

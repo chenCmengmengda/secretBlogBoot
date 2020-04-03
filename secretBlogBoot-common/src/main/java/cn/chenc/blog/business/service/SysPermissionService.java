@@ -15,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface SysPermissionService extends IService<SysPermission> {
     public ResponseVO selectSysPermissionListPage(int page, int size);
     public ResponseVO selectTreePermission();
+    public ResponseVO selectMenu();
 }

@@ -10,11 +10,12 @@
 <body>
 <div class="ok-body">
 	<!--form表单-->
-	<form class="layui-form ok-form">
+	<form class="layui-form ok-form" lay-filter="filter">
 		<div class="layui-form-item">
+			<input type="hidden" id="id" name="id">
 			<label class="layui-form-label">角色名</label>
 			<div class="layui-input-block">
-				<input type="text" name="name" placeholder="请输入角色名" autocomplete="off" class="layui-input"
+				<input type="text" name="rolename" placeholder="请输入角色名" autocomplete="off" class="layui-input"
 				       lay-verify="required">
 			</div>
 		</div>
@@ -26,10 +27,16 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
+			<label class="layui-form-label">状态</label>
+			<div class="layui-input-block">
+				<input type="checkbox" name="status" lay-skin="switch" lay-text="启用|停用" checked value="0">
+			</div>
+		</div>
+		<div class="layui-form-item">
 			<label class="layui-form-label">权限</label>
 			<div class="layui-input-block">
 				<!-- TODO -->
-				<div id="authTree"></div>
+				<div id="permissionTree"></div>
 			</div>
 		</div>
 		<div class="layui-form-item">
@@ -49,17 +56,76 @@
 		authtree: 'authtree',
 	});
 
-	layui.use(['element', 'form', 'jquery'], function () {
+
+	layui.use(['element', 'form', 'jquery','okUtils','tree'], function () {
 		var element = layui.element;
 		var form = layui.form;
 		var $ = layui.jquery;
+		var okUtils=layui.okUtils;
+		var tree=layui.tree;
 		okLoading.close();
+		let data=[];
+
+        okUtils.ajax("/sysPermission/tree", "post", null, true).done(function (response) {//查看权限树
+            data=response.data;
+            tree.render({
+                elem: "#permissionTree",
+                // data: okUtils.mockApi.permission.list,
+                data: data,
+                showCheckbox: true,
+                id: 'permissionId'
+            });
+
+            //勾选该角色拥有的权限
+            okUtils.ajax("/sysRole/selectPermByRoleId", "post", {id:id}, true).done(function (response) {//查看数据详情
+                let perArr=[];
+                console.log(response);
+                for(var i=0;i<response.data.length;i++){
+                    perArr.push(response.data[i].permissionId);
+
+                }
+                console.log(perArr);
+                tree.setChecked('permissionId', perArr);
+            }).fail(function (error) {
+                console.log(error);
+            });
+
+
+        }).fail(function (error) {
+            console.log(error);
+        });
+
+        //获取详情
+        let id=okUtils.location.getRequestByKey("id");
+        okUtils.ajax("/sysRole/selectById", "post", {id:id}, true).done(function (response) {//查看数据详情
+            form.val('filter', {
+                "id": response.data.id
+                ,"rolename": response.data.rolename
+                ,"remarks": response.data.remarks
+                ,"status":response.data.status==1?"selected":"false"
+            });
+
+        }).fail(function (error) {
+            console.log(error);
+        });
+
 		form.on('submit(edit)', function (data) {
-			console.log(data.field);
-			layer.msg("编辑成功！", {icon: 6, time: 1000, anim: 4}, function () {
-				parent.layer.close(parent.layer.getFrameIndex(window.name));
-			});
-			return false;
+            var treeData=tree.getChecked('permissionId');
+            var permissionIds=okUtils.treeChecked(treeData);
+            console.log(permissionIds);
+            data.field.id=id;
+            data.field.permissionIds=permissionIds;
+            // 请求后台
+            okUtils.ajax("/sysRole/edit", "post", data.field, true).done(function (response) {
+                console.log(response);
+                okLayer.greenTickMsg(response.message, function () {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));
+                });
+            }).fail(function (error) {
+                console.log(error)
+            });
+            return false;
+
 		});
 	})
 </script>

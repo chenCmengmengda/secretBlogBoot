@@ -10,11 +10,11 @@
 <body>
 <div class="ok-body">
 	<!--form表单-->
-	<form class="layui-form layui-form-pane ok-form">
+	<form class="layui-form layui-form-pane ok-form" >
 		<div class="layui-form-item">
 			<label class="layui-form-label">角色名</label>
 			<div class="layui-input-block">
-				<input type="text" name="name" placeholder="请输入角色名" autocomplete="off" class="layui-input"
+				<input type="text" name="rolename" placeholder="请输入角色名" autocomplete="off" class="layui-input"
 				       lay-verify="required">
 			</div>
 		</div>
@@ -26,7 +26,14 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
+			<label class="layui-form-label">状态</label>
+			<div class="layui-input-block">
+				<input type="checkbox" name="status" lay-skin="switch" lay-text="启用|停用" checked value="0">
+			</div>
+		</div>
+		<div class="layui-form-item">
 			<label class="layui-form-label">权限</label>
+
 			<div class="layui-input-block">
 				<div id="permissionTree"></div>
 			</div>
@@ -42,11 +49,12 @@
 <!--js逻辑-->
 <script src="../../lib/layui/layui.js"></script>
 <script type="text/javascript">
-	layui.use(["element", "form", "tree", "okLayer", "okUtils"], function () {
+	layui.use(["element", "form", "tree", "okLayer", "okUtils","jquery"], function () {
 		let form = layui.form;
 		let tree = layui.tree;
 		let okLayer = layui.okLayer;
 		let okUtils = layui.okUtils;
+		let $=layui.jquery;
 		okLoading.close();
 		let data = [{
 			"title": "根目录",
@@ -77,13 +85,31 @@
 			showCheckbox: true
 		});
 
+        okUtils.ajax("/sysPermission/tree", "post", null, true).done(function (response) {//查看权限树
+			data=response.data;
+            tree.render({
+                elem: "#permissionTree",
+                // data: okUtils.mockApi.permission.list,
+                data: data,
+                showCheckbox: true,
+                id: 'permissionId'
+            });
+        }).fail(function (error) {
+            console.log(error);
+        });
+
+
+
 		form.on("submit(add)", function (data) {
 			// TODO 权限节点校验
-
+            var treeData=tree.getChecked('permissionId');
+            var permissionIds=okUtils.treeChecked(treeData);
+			console.log(permissionIds);
+            data.field.permissionIds=permissionIds;
 			// 请求后台
-			okUtils.ajax("/role/addRole", "post", data.field, true).done(function (response) {
+			okUtils.ajax("/sysRole/add", "post", data.field, true).done(function (response) {
 				console.log(response);
-				okLayer.greenTickMsg("添加成功", function () {
+				okLayer.greenTickMsg(response.message, function () {
 					parent.layer.close(parent.layer.getFrameIndex(window.name));
 				});
 			}).fail(function (error) {

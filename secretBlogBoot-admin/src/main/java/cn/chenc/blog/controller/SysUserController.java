@@ -11,7 +11,9 @@ import cn.chenc.blog.framework.object.ResponseVO;
 import cn.chenc.blog.utils.BCryptPasswordEncoderUtils;
 import cn.chenc.blog.utils.ResultUtil;
 import cn.chenc.blog.utils.SessionUtil;
+import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.aspectj.weaver.bcel.BcelAccessForInlineMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,6 +51,7 @@ import java.util.Map;
  * @author chenc
  * @since 2020-03-21
  */
+@BussinessLog("用户管理")
 @Controller
 @RequestMapping("/sysUser")
 public class SysUserController {
@@ -62,7 +65,15 @@ public class SysUserController {
     private PersistentTokenRepository persistentTokenRepository;
 
 
-    @Operation(name="用户登录")
+    /**
+     * @description: 后台登录
+     * @param [sysUser, request, response]
+     * @return cn.chenc.blog.framework.object.ResponseVO
+     * @throws
+     * @author 陈_C
+     * @date 2020/4/1 陈_C
+     */
+    @BussinessLog(value="用户登录")
     @RequestMapping("/login")
     @ResponseBody
     public ResponseVO login(SysUser sysUser, HttpServletRequest request, HttpServletResponse response){
@@ -77,6 +88,9 @@ public class SysUserController {
             Authentication authentication = authenticationManager.authenticate(token);
             rememberMeServices.loginSuccess(request,response,authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            sysUserService.update(new SysUser(),new UpdateWrapper<SysUser>(new SysUser()) {}
+                    .setSql("login_num = login_num+1")
+                    .eq("username",sysUser.getUsername()));//登录成功更新登录次数
         } catch (UsernameNotFoundException e){//处理登录异常
             return ResultUtil.error(e.getMessage());
         } catch (BadCredentialsException e) {
@@ -89,6 +103,14 @@ public class SysUserController {
         return ResultUtil.success("登录成功");
     }
 
+    /**
+     * @description: 后台注销
+     * @param [request, response]
+     * @return org.springframework.web.servlet.ModelAndView
+     * @throws
+     * @author 陈_C
+     * @date 2020/4/1 陈_C
+     */
     @BussinessLog(value = "退出登录")
     @RequestMapping("/logout")
     public ModelAndView logout(HttpServletRequest request,HttpServletResponse response){
@@ -103,20 +125,55 @@ public class SysUserController {
         return ResultUtil.redirect("/pages/login");
     }
 
+    /**
+     * @description: 查询用户列表
+     * @param [page, size]
+     * @return cn.chenc.blog.framework.object.ResponseVO
+     * @throws
+     * @author 陈_C
+     * @date 2020/4/1 陈_C
+     */
+    @BussinessLog("查询系统用户列表")
     @ResponseBody
     @RequestMapping("/list")
     public ResponseVO selectSysUserListPage(int page, int size){
         return sysUserService.selectSysUserListPage(page,size);
     }
 
+    /**
+     * @description: 根据id查询用户
+     * @param [id]
+     * @return cn.chenc.blog.framework.object.ResponseVO
+     * @throws
+     * @author 陈_C
+     * @date 2020/4/1 陈_C
+     */
+    @BussinessLog("查询用户详情")
+    @ResponseBody
+    @RequestMapping("/selectById")
+    public ResponseVO selectSysUserById(int id){
+        SysUser sysUser=sysUserService.getById(id);
+        return ResultUtil.success(sysUser);
+    }
+
+    /**
+     * @description: 添加用户
+     * @param [sysUser]
+     * @return cn.chenc.blog.framework.object.ResponseVO
+     * @throws
+     * @author 陈_C
+     * @date 2020/4/1 陈_C
+     */
+    @BussinessLog("添加系统用户")
     @ResponseBody
     @RequestMapping("/add")
     public ResponseVO addSysUser(SysUser sysUser){
-        List<SysUser> list=sysUserService.list(new QueryWrapper<SysUser>().eq("username",sysUser.getUsername()));//判断用户名是否存在
+        List<SysUser> list=sysUserService.list(new QueryWrapper<SysUser>()
+                .eq("username",sysUser.getUsername()));//判断用户名是否存在
         if(list.size()>0){
             return ResultUtil.error("用户名已存在");
         }
-        if(sysUser.getPassword()==null || "".equals(sysUser.getPassword())){
+        if(sysUser.getPassword()==null || "".equals(sysUser.getPassword())){//如果用户名为空
             sysUser.setPassword("111111");//默认密码111111
         }
         sysUser.setPassword(BCryptPasswordEncoderUtils.encodePassword(sysUser.getPassword()));//bc加密
@@ -129,6 +186,15 @@ public class SysUserController {
 
     }
 
+    /**
+     * @description: 修改用户
+     * @param [sysUser, request]
+     * @return cn.chenc.blog.framework.object.ResponseVO
+     * @throws
+     * @author 陈_C
+     * @date 2020/4/1 陈_C
+     */
+    @BussinessLog("修改系统用户")
     @ResponseBody
     @RequestMapping("/edit")
     public ResponseVO editSysUser(SysUser sysUser,HttpServletRequest request){
@@ -138,19 +204,31 @@ public class SysUserController {
         if(list.size()>0){
             return ResultUtil.error("用户名已存在");
         }
+        if(sysUser.getStatus()==null || "".equals(sysUser.getStatus())){
+            sysUser.setStatus(1);//如果前端没有传入是否启用参数，则不启用
+        }
         if(sysUser.getPassword()==null || "".equals(sysUser.getPassword())){
-            sysUser.setPassword(request.getParameter("aldPassword"));//如果用户没输入密码，则密码保持不变
+            sysUser.setPassword(request.getParameter("oldPassword"));//如果用户没输入密码，则密码保持不变
         } else{//否则加密新密码
             sysUser.setPassword(BCryptPasswordEncoderUtils.encodePassword(sysUser.getPassword()));
         }
         boolean bool=sysUserService.updateById(sysUser);
         if(bool){
-            return ResultUtil.success("添加成功");
+            return ResultUtil.success("修改成功");
         } else{
-            return ResultUtil.error("添加失败");
+            return ResultUtil.error("修改失败");
         }
     }
 
+    /**
+     * @description: 删除用户
+     * @param [ids]
+     * @return cn.chenc.blog.framework.object.ResponseVO
+     * @throws
+     * @author 陈_C
+     * @date 2020/4/1 陈_C
+     */
+    @BussinessLog("删除系统用户")
     @ResponseBody
     @RequestMapping("/del")
     public ResponseVO delSysUser(Integer[] ids){

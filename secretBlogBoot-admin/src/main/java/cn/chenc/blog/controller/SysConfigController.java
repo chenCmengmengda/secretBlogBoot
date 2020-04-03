@@ -1,6 +1,7 @@
 package cn.chenc.blog.controller;
 
 
+import cn.chenc.blog.business.annoation.BussinessLog;
 import cn.chenc.blog.business.entity.SysConfig;
 import cn.chenc.blog.business.service.SysConfigService;
 import cn.chenc.blog.framework.object.ResponseVO;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author chenc
  * @since 2020-03-24
  */
+@BussinessLog("系统配置")
 @Controller
 @RequestMapping("/sysConfig")
 public class SysConfigController {
@@ -31,6 +33,7 @@ public class SysConfigController {
     @Autowired
     private SysConfigService sysConfigService;
 
+    @BussinessLog("查询系统配置列表")
     @ResponseBody
     @RequestMapping("/list")
     public ResponseVO selectSysConfigListPage(int page,int size){
@@ -39,6 +42,7 @@ public class SysConfigController {
         return ResultUtil.success(list);
     }
 
+    @BussinessLog("添加系统配置")
     @ResponseBody
     @RequestMapping("/add")
     public ResponseVO addSysConfig(SysConfig sysConfig){
@@ -50,6 +54,7 @@ public class SysConfigController {
         }
     }
 
+    @BussinessLog("修改系统配置")
     @ResponseBody
     @RequestMapping("/edit")
     public ResponseVO editSysConfig(SysConfig sysConfig){
@@ -61,6 +66,7 @@ public class SysConfigController {
         }
     }
 
+    @BussinessLog("配置详情")
     @ResponseBody
     @RequestMapping("/selectById")
     public ResponseVO selectSysConfigById(int id){
@@ -76,6 +82,7 @@ public class SysConfigController {
      * @author 陈_C
      * @date 2020/3/27 陈_C
      */
+    @BussinessLog("配置删除")
     @ResponseBody
     @RequestMapping("/del")
     public ResponseVO delSysConfig(Integer[] ids){
