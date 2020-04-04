@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>添加角色</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../css/oksub.css">
+    <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
+</head>
+<body>
+<div class="ok-body">
+    <!--form表单-->
+    <form class="layui-form layui-form-pane ok-form" >
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" placeholder="请输入权限名称" autocomplete="off" class="layui-input"
+                       lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限路径</label>
+            <div class="layui-input-block">
+                <input type="text" name="href" placeholder="请输入权限路径" autocomplete="off" class="layui-input"
+                       lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限标识</label>
+            <div class="layui-input-block">
+                <input type="text" name="code" placeholder="请输入权限标识" autocomplete="off" class="layui-input"
+                       lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">上级权限</label>
+            <div class="layui-input-block" style="display: flex;">
+                <input type="text" id="superPermissionName" value="" class="layui-input" readonly>
+                <input type="hidden" id="pid" name="pid" />
+                <div class="layui-input-inline" style="width: auto;margin-right:0">
+                    <button type="button" id="openButton" onclick="layui.okLayer.open('权限树','./permission-tree','500px','500px',null,null)"  class="layui-btn">选择上级权限</button>
+                </div>
+            </div>
+            <!--<div class="layui-form-mid layui-word-aux" style="padding:0 !important;">-->
+                <!--<button type="button" id="openButton" onclick="layui.okLayer.open('权限树','./permission-tree','500px','500px',null,null)"  class="layui-btn">选择上级权限</button>-->
+            <!--</div>-->
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                <select name="type" style="width: 100%;" lay-verify="required" >
+                    <option value="0">菜单</option>
+                    <option value="1">功能</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图标字体库</label>
+            <div class="layui-input-block">
+                <input type="text" name="fontFamily" placeholder="请输入图标字体库:ok-icon,不输入则使用layui字体" autocomplete="off" class="layui-input"
+                       >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图标</label>
+            <div class="layui-input-block">
+                <input type="text" name="icon" placeholder="请输入图标码,不输入则使用默认图标" autocomplete="off" class="layui-input"
+                       >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单是否展开</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="spread" lay-skin="switch" lay-text="展开|不展开" value="1">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="status" lay-skin="switch" lay-text="启用|停用" checked value="0">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限描述</label>
+            <div class="layui-input-block">
+                <input type="text" name="description" placeholder="请输入权限描述" autocomplete="off" class="layui-input"
+                       >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!--js逻辑-->
+<script src="../../lib/layui/layui.js"></script>
+<script type="text/javascript">
+    var $;
+    layui.use(["element", "form", "tree", "okLayer", "okUtils","jquery"], function () {
+        let form = layui.form;
+        let tree = layui.tree;
+        let okLayer = layui.okLayer;
+        let okUtils = layui.okUtils;
+        $=layui.jquery;
+        okLoading.close();
+        let data = [{
+            "title": "根目录",
+            "spread": true,
+            "children": [{
+                "title": "会员管理",
+                "spread": true,
+                "children": [{
+                    "title": "用户管理",
+                    "spread": true,
+                    "children": [{"title": "添加用户"}, {"title": "编辑用户"}, {"title": "删除用户"}]
+                }, {
+                    "title": "角色管理",
+                    "spread": true,
+                    "children": [{"title": "添加角色"}, {"title": "编辑角色"}, {"title": "删除角色"}]
+                }, {
+                    "title": "权限管理",
+                    "spread": true,
+                    "children": [{"title": "添加权限"}, {"title": "编辑权限"}, {"title": "删除权限"}]
+                }]
+            }]
+        }];
+
+        tree.render({
+            elem: "#permissionTree",
+            // data: okUtils.mockApi.permission.list,
+            data: data,
+            showCheckbox: true
+        });
+
+        okUtils.ajax("/sysPermission/tree", "post", null, true).done(function (response) {//查看权限树
+            data=response.data;
+            tree.render({
+                elem: "#permissionTree",
+                // data: okUtils.mockApi.permission.list,
+                data: data,
+                showCheckbox: true,
+                id: 'permissionId'
+            });
+        }).fail(function (error) {
+            console.log(error);
+        });
+
+
+
+        form.on("submit(add)", function (data) {
+            // TODO 权限节点校验
+
+            data.field.pid=$('#pid').val();
+            // 请求后台
+            okUtils.ajax("/sysPermission/add", "post", data.field, true).done(function (response) {
+                console.log(response);
+                okLayer.greenTickMsg(response.message, function () {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));
+                });
+            }).fail(function (error) {
+                console.log(error)
+            });
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

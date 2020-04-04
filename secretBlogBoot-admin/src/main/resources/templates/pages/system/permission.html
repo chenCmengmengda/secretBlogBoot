@@ -36,56 +36,84 @@
 			<div id="permissionTree"></div>
 		</div>
 		<div class="layui-col-md9">
-			<table class="layui-hide" id="permissionTable" lay-filter="tableFilter"></table>
+			<table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
 		</div>
 	</div>
 </div>
 <!--js逻辑-->
 <script src="../../lib/layui/layui.js"></script>
 <script>
-	layui.use(["element", "table", "laydate", "tree", "okUtils", "okMock"], function () {
+	var rowData;
+	layui.use(["element", "table", "laydate", "tree", "okUtils", "okMock",'okLayer'], function () {
 		let table = layui.table;
 		let laydate = layui.laydate;
 		let tree = layui.tree;
 		let okUtils = layui.okUtils;
 		let okMock = layui.okMock;
+		let okLayer=layui.okLayer;
 		okLoading.close();
 		laydate.render({elem: '#startTime', type: "datetime"});
 		laydate.render({elem: '#endTime', type: "datetime"});
 
-		function initPermissionTree() {
-			okUtils.ajax("/sysPermission/tree", "get", null, true).done(function (response) {
-				tree.render({
-					elem: '#permissionTree',
-					data: response.data,
-					showCheckbox: true,
-					id: 'id',
-					isJump: false,
-					click: function (obj) {
-						var data = obj.data;
-						layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
-					}
-				});
+        table.on("toolbar(tableFilter)", function (obj) {
+            switch (obj.event) {
+                case "add":
+                    add();
+                    break;
+                case "batchDel":
+                    batchDel();
+                    break;
+            }
+        });
 
-				initPermissionTable();
-			}).fail(function (error) {
-				console.log(error)
+        table.on("tool(tableFilter)", function (obj) {
+            let data = obj.data;
+            switch (obj.event) {
+                case "edit":
+                    rowData=data;
+                    edit(data.id);
+                    break;
+                case "del":
+                    del(data.id);
+                    break;
+            }
+        });
+
+
+		okUtils.ajax("/sysPermission/tree", "get", null, true).done(function (response) {
+			tree.render({
+				elem: '#permissionTree',
+				data: response.data,
+				showCheckbox: true,
+				id: 'id',
+				isJump: false,
+				click: function (obj) {
+					var data = obj.data;
+					layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
+				}
 			});
-		}
 
+			initPermissionTable();
+		}).fail(function (error) {
+			console.log(error)
+		});
+
+        let permissionTable;
 		function initPermissionTable() {
-			table.render({
-				elem: '#permissionTable',
+            permissionTable=table.render({
+				elem: '#tableId',
 				url: "/sysPermission/list",
 				limit: 20,
 				page: true,
 				size: "sm",
+                toolbar: "#toolbarTpl",
 				cols: [[
-					{field: "id", title: "ID", width: 170, sort: true, fixed: "left"},
+                    {type: "checkbox"},
+					{field: "id", title: "ID", width: 60, sort: true},
 					{field: "title", title: "权限名称", width: 100},
 					{field: "code", title: "权限标识", width: 150},
 					{field: "href", title: "权限路径", width: 150},
-					{field:'parentPermission',title:'父菜单',align: 'center',templet:function(d){
+					{field:'parentPermission',title:'父菜单',width: 150,align: 'center',templet:function(d){
                             if(d.parentPermission == null){
                                 return '无';
                             }else{
@@ -117,8 +145,51 @@
 			});
 		}
 
-		initPermissionTree();
+        function add() {
+            okLayer.open("添加权限", "permission-add", "90%", "90%", null, function () {
+                permissionTable.reload();
+            })
+        }
+        function edit() {
+            okLayer.open("修改权限", "permission-edit", "90%", "90%", null, function () {
+                permissionTable.reload();
+            })
+        }
+
+        function del(id) {
+            okLayer.confirm("确定要删除吗？", function () {
+                okUtils.ajax("/sysPermission/del", "get", {ids: id}, true).done(function (response) {
+                    okUtils.tableSuccessMsg(response.message);
+                }).fail(function (error) {
+                    console.log(error)
+                });
+            })
+        }
+
+        function batchDel() {
+            okLayer.confirm("确定要批量删除吗？", function (index) {
+                layer.close(index);
+                let idsStr = okUtils.tableBatchCheck(table);
+                if (idsStr) {
+                    okUtils.ajax("/sysPermission/del", "get", {ids: idsStr}, true).done(function (response) {
+                        okUtils.tableSuccessMsg(response.message);
+                    }).fail(function (error) {
+                        console.log(error);
+                    });
+                }
+            });
+        }
+
+
+
 	});
+</script>
+<!-- 头工具栏模板 -->
+<script type="text/html" id="toolbarTpl">
+	<div class="layui-btn-container">
+		<div class="layui-inline" lay-event="add"><i class="layui-icon layui-icon-add-1"></i></div>
+		<div class="layui-inline" lay-event="batchDel"><i class="layui-icon layui-icon-delete"></i></div>
+	</div>
 </script>
 <!--行工具栏模板-->
 <script type="text/html" id="operationTpl">

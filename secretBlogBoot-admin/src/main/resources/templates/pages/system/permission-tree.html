@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>权限树</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../css/oksub.css">
+    <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div id="permissionTree"></div>
+<!--js逻辑-->
+<script src="../../lib/layui/layui.js"></script>
+<script type="text/javascript">
+
+    var permissionTree;//权限树
+
+
+    layui.use(['form', 'layer', 'tree','jquery','okLayer'], function() {
+        // 获得frame索引
+        var index = parent.layer.getFrameIndex(window.name);
+        var form = layui.form,
+            layer = layui.layer,
+            tree=layui.tree;
+            $ = layui.jquery;
+        let okLayer = layui.okLayer;
+        okLoading.close();
+        getPermissionTree();
+
+
+        /**
+         * 获取权限树
+         * */
+        function getPermissionTree(){
+            //获取权限树
+            $.ajax({
+                url : "/sysPermission/tree",
+                type: "get",
+                async: false,
+                data: {},
+                dataType:"json",
+                beforeSend: function(){
+               //     loading = layer.load();//加载动画
+                },
+                success:function(res){
+                    console.log(res.data);
+                    if( res != null ){
+                        //组合权限树
+                      permissionTree = createPermissionTree(res.data);
+                        tree.render({
+                            elem : "#permissionTree",
+                            data: permissionTree,
+                            click: function(node){
+
+                                console.log(node);
+                                parent.$("[name=pid]").val(node.data.id);
+                                parent.$("#superPermissionName").val(node.data.title);
+                                parent.layer.close(index);
+
+
+                            },
+
+                        });
+                    }
+
+                },
+                complete:function(){
+            //        layer.close(loading);
+                },
+                error:function(){
+                    layer.msg("服务器开小差了!");
+                },
+            });
+        }
+
+        /***
+         构建权限树
+         **/
+        function createPermissionTree(tree){
+
+            if(tree == null){
+                return null;
+            }
+            var treeNode = [];
+            for(var i=0;i<tree.length; i++){
+                var node = {
+                    "title" : tree[i].title+(tree[i].type==0?"(菜单)":"(功能)"),
+                    "children": createPermissionTree(tree[i].children),
+                    "id" : tree[i].id,
+                }
+                treeNode.push(node);
+            }
+            return treeNode;
+        }
+    })
+</script>
+</body>
+</html>

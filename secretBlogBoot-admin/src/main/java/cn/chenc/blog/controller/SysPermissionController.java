@@ -3,9 +3,12 @@ package cn.chenc.blog.controller;
 
 import cn.chenc.blog.business.annoation.BussinessLog;
 import cn.chenc.blog.business.entity.SysPermission;
+import cn.chenc.blog.business.entity.SysRolePermission;
 import cn.chenc.blog.business.service.SysPermissionService;
+import cn.chenc.blog.business.service.SysRolePermissionService;
 import cn.chenc.blog.framework.object.ResponseVO;
 import cn.chenc.blog.utils.ResultUtil;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ public class SysPermissionController {
 
     @Autowired
     private SysPermissionService sysPermissionService;
+    @Autowired
+    private SysRolePermissionService sysRolePermissionService;
 
     /**
      * @description: 查询权限列表
@@ -108,6 +113,15 @@ public class SysPermissionController {
     @ResponseBody
     @RequestMapping("/add")
     public ResponseVO addSysPermission(SysPermission sysPermission){
+        if(sysPermission.getSpread()==null){//空则不展开
+            sysPermission.setSpread(false);
+        }
+        if(sysPermission.getStatus()==null || "".equals(sysPermission.getStatus())){//空则不启用
+            sysPermission.setStatus(1);
+        }
+        if(sysPermission.getIcon()==null || "".equals(sysPermission.getIcon())){//设置默认图标
+            sysPermission.setIcon("&#xe62e;");
+        }
         boolean bool=sysPermissionService.save(sysPermission);
         if(bool){
             return ResultUtil.success("添加成功");
@@ -128,7 +142,16 @@ public class SysPermissionController {
     @ResponseBody
     @RequestMapping("/edit")
     public ResponseVO editSysPermission(SysPermission sysPermission){
-        boolean bool=sysPermissionService.save(sysPermission);
+        if(sysPermission.getSpread()==null){//空则不展开
+            sysPermission.setSpread(false);
+        }
+        if(sysPermission.getStatus()==null || "".equals(sysPermission.getStatus())){//空则不启用
+            sysPermission.setStatus(1);
+        }
+        if(sysPermission.getIcon()==null || "".equals(sysPermission.getIcon())){//设置默认图标
+            sysPermission.setIcon("&#xe62e;");
+        }
+        boolean bool=sysPermissionService.updateById(sysPermission);
         if(bool){
             return ResultUtil.success("修改成功");
         } else{
@@ -150,6 +173,10 @@ public class SysPermissionController {
     public ResponseVO delSysPermission(Integer[] ids){
         List<Integer> list= Arrays.asList(ids);//id转为list集合
         boolean bool=sysPermissionService.removeByIds(list);//批量删除权限
+        for(Integer id:ids) {//删除关联表里存在的关联权限
+            sysRolePermissionService.remove(new UpdateWrapper<SysRolePermission>()
+                    .eq("permission_id",id));
+        }
         if(bool){
             return ResultUtil.success("删除成功");
         } else{
