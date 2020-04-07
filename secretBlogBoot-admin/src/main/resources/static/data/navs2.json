@@ -288,12 +288,6 @@
         "spread": false
       },
       {
-        "title": "友情链接",
-        "href": "pages/system/friend-link",
-        "icon": "&#xe62e;",
-        "spread": false
-      },
-      {
         "title": "屏蔽词",
         "href": "pages/system/shield",
         "icon": "&#xe62e;",
@@ -335,19 +329,57 @@
       {
         "title": "文章管理",
         "href": "pages/content/article",
-        "icon": "&#xe61c;",
+        "icon": "&#xe62e;",
         "spread": false
       },
       {
         "title": "文章类别",
         "href": "pages/content/category",
-        "icon": "&#xe61c;",
+        "icon": "&#xe62e;",
         "spread": false
       },
       {
         "title": "相册管理",
         "href": "pages/content/photo",
-        "icon": "&#xe61c;",
+        "icon": "&#xe62e;",
+        "spread": false
+      }
+    ]
+  },
+  {
+    "title": "网站管理",
+    "href": "",
+    "icon": "&#xe705;",
+    "spread": false,
+    "children": [
+      {
+        "title": "友情链接",
+        "href": "pages/web/friend-link",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "模板管理",
+        "href": "pages/web/mould",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "评论管理",
+        "href": "pages/web/comment",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "更新日志",
+        "href": "pages/web/updateLog",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "公告管理",
+        "href": "pages/web/notice",
+        "icon": "&#xe62e;",
         "spread": false
       }
     ]
