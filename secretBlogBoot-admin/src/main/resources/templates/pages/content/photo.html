@@ -1,10 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>相册管理</title>
-</head>
-<body>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../css/oksub.css">
+    <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all" />
+    <style>
 
+        /*公共样式*/
+        .childrenBody{ padding:10px;}
+        .layui-table-view{ margin:0 !important;}
+        .magb0{margin-bottom:0 !important;}
+        .magt0{ margin-top:0 !important;}
+        .magt3{ margin-top:3px !important;}
+        .magt10{ margin-top:10px !important;}
+        .magb15{ margin-bottom:15px !important;}
+        .magt30{ margin-top:30px !important;}
+        .layui-left{text-align:left;}
+        .layui-block{ width:100% !important;}
+        .layui-center{text-align:center;}
+        .layui-right{text-align:right;}
+        .layui-elem-quote.title{ padding:10px 15px; margin-bottom:0;}
+        .layui-bg-white{ background-color:#fff !important;}
+        .border{ border:1px solid #e6e6e6 !important; padding:10px; border-top:none;}
+        .main_btn .layui-btn{ margin:2px 5px 2px 0;}
+        .layui-timeline-axis{ left:-4px;}
+        .layui-elem-quote{ word-break: break-all;}
+        .icons li,.icons li:hover,.loginBody .seraph,.loginBody .seraph:hover,.loginBody .layui-form-item.layui-input-focus label,.loginBody .layui-form-item label,.loginBody .layui-form-item.layui-input-focus input,.loginBody .layui-form-item input{transition: all 0.3s ease-in-out;-webkit-transition: all 0.3s ease-in-out;}
+        .icons li:hover i,.icons li i{transition: font-size 0.3s ease-in-out;-webkit-transition: font-size 0.3s ease-in-out;}
+        .loginBody .layui-input-focus .layui-input::-webkit-input-placeholder{transition: color 0.2s linear 0.2s;-webkit-transition: color 0.2s linear 0.2s;}
+        .loginBody .layui-input-focus .layui-input::-moz-placeholder{transition: color 0.2s linear 0.2s;}
+        .loginBody .layui-input-focus .layui-input:-ms-input-placeholder{transition: color 0.2s linear 0.2s;}
+        .loginBody .layui-input-focus .layui-input::placeholder{transition: color 0.2s linear 0.2s;-webkit-transition: color 0.2s linear 0.2s;}
+        /*图片管理*/
+        #Images li{ width:19%; margin:0.5% 0.5%; float: left; overflow:hidden;}
+        #Images li img{ width:100%; cursor:pointer; }
+        #Images li .operate{ display: block; height: 40px; width:100%; background:#f4f5f9; }
+        #Images li .operate .check{ float:left; margin-left:11px; height:18px; padding:11px 0; width:74%; position:relative;}
+        #Images li .operate .check .layui-form-checkbox[lay-skin=primary]{ width:100%;}
+        #Images li .operate .check .layui-form-checkbox[lay-skin=primary] span{ padding:0 5px 0 25px; width:100%; box-sizing:border-box;}
+        #Images li .operate .check .layui-form-checkbox[lay-skin=primary] i{position:absolute; left:0; top:0;}
+        #Images li .operate .img_del{ float:right; margin:9px 11px 0 0; font-size: 22px !important; cursor:pointer; }
+        #Images li .operate .img_del:hover{ color:#f00; }
+        @media screen and (max-width:1050px){#Images li{ width:24%;}}
+        @media screen and (max-width: 750px){#Images li{ width:49%;}}
+        @media screen and (max-width:432px){#Images li{ width:99%;}}
+
+    </style>
+</head>
+<body class="childrenBody">
+<form class="layui-form">
+    <blockquote class="layui-elem-quote news_search">
+        <div class="layui-inline">
+            <input type="checkbox" name="selectAll" id="selectAll" lay-filter="selectAll" lay-skin="primary" title="全选">
+        </div>
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-sm layui-btn-danger batchDel">批量删除</a>
+        </div>
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-sm uploadNewImg">上传新图片</a>
+        </div>
+    </blockquote>
+    <ul class="layer-photos-demo" id="Images"></ul>
+</form>
+<script type="text/javascript" src="../../lib/layui/layui.js"></script>
+<script type="text/javascript" >
+    layui.use(["element", "form", "laydate", "okLayer", "okUtils","jquery",'flow','upload','layer'], function () {
+        var flow = layui.flow,
+            form = layui.form,
+            layer = layui.layer,
+            upload = layui.upload,
+            $ = layui.jquery;
+        okLoading.close();
+
+        //流加载图片
+        var imgNums = 15;  //单页显示图片数量
+        flow.load({
+            elem: '#Images', //流加载容器
+            done: function(page, next){ //加载下一页
+                $.get("../../data/images.json",function(res){
+                    //模拟插入
+                    var imgList = [],data = res.data;
+                    var maxPage = imgNums*page < data.length ? imgNums*page : data.length;
+                    setTimeout(function(){
+                        for(var i=imgNums*(page-1); i<maxPage; i++){
+                            imgList.push('<li><img layer-src="../../'+ data[i].src +'" src="../../'+ data[i].thumb +'" alt="'+data[i].alt+'"><div class="operate"><div class="check"><input type="checkbox" name="belle" lay-filter="choose" lay-skin="primary" title="'+data[i].alt+'"></div><i class="layui-icon img_del">&#xe640;</i></div></li>');
+                        }
+                        next(imgList.join(''), page < (data.length/imgNums));
+                        form.render();
+                    }, 500);
+                });
+            }
+        });
+
+        //设置图片的高度
+        $(window).resize(function(){
+            $("#Images li img").height($("#Images li img").width());
+        })
+
+
+
+        //弹出层
+        $("body").on("click","#Images img",function(){
+
+            console.log($(this).attr('layer-src'));//获取元素属性
+            var res={
+                "title": "图片管理",
+                "id": "Images",
+                "start": 0,
+                "data": [
+                    {
+                        "src": "/images/userface1.jpg",
+                        "thumb": "/images/userface1.jpg",
+                        "alt": "美女生活照1",
+                        "pid":"1"
+                    }
+                ]
+            }
+            layer.photos({
+                photos: res,
+                anim: 5,
+            });
+            // $.getJSON('../../data/images.json', function(json){
+            //
+            //     var res = json;
+            //     layer.photos({
+            //         photos: res,
+            //         anim: 5,
+            //
+            //     });
+            // });
+        })
+
+        //删除单张图片
+        $("body").on("click",".img_del",function(){
+            var _this = $(this);
+            layer.confirm('确定删除图片"'+_this.siblings().find("input").attr("title")+'"吗？',{icon:3, title:'提示信息'},function(index){
+                _this.parents("li").hide(1000);
+                setTimeout(function(){_this.parents("li").remove();},950);
+                layer.close(index);
+            });
+        })
+
+        //全选
+        form.on('checkbox(selectAll)', function(data){
+            var child = $("#Images li input[type='checkbox']");
+            child.each(function(index, item){
+                item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+
+        //通过判断是否全部选中来确定全选按钮是否选中
+        form.on("checkbox(choose)",function(data){
+            var child = $(data.elem).parents('#Images').find('li input[type="checkbox"]');
+            var childChecked = $(data.elem).parents('#Images').find('li input[type="checkbox"]:checked');
+            if(childChecked.length == child.length){
+                $(data.elem).parents('#Images').siblings("blockquote").find('input#selectAll').get(0).checked = true;
+            }else{
+                $(data.elem).parents('#Images').siblings("blockquote").find('input#selectAll').get(0).checked = false;
+            }
+            form.render('checkbox');
+        })
+
+        //批量删除
+        $(".batchDel").click(function(){
+            var $checkbox = $('#Images li input[type="checkbox"]');
+            var $checked = $('#Images li input[type="checkbox"]:checked');
+            if($checkbox.is(":checked")){
+                layer.confirm('确定删除选中的图片？',{icon:3, title:'提示信息'},function(index){
+                    var index = layer.msg('删除中，请稍候',{icon: 16,time:false,shade:0.8});
+                    setTimeout(function(){
+                        //删除数据
+                        $checked.each(function(){
+                            $(this).parents("li").hide(1000);
+                            setTimeout(function(){$(this).parents("li").remove();},950);
+                        })
+                        $('#Images li input[type="checkbox"],#selectAll').prop("checked",false);
+                        form.render();
+                        layer.close(index);
+                        layer.msg("删除成功");
+                    },2000);
+                })
+            }else{
+                layer.msg("请选择需要删除的图片");
+            }
+        })
+
+    });
+</script>
 </body>
 </html>
