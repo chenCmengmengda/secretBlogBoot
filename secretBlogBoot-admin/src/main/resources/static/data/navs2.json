@@ -327,6 +327,32 @@
     ]
   },
   {
+    "title": "内容管理",
+    "href": "",
+    "icon": "&#xe705;",
+    "spread": false,
+    "children": [
+      {
+        "title": "文章管理",
+        "href": "pages/content/article",
+        "icon": "&#xe61c;",
+        "spread": false
+      },
+      {
+        "title": "文章类别",
+        "href": "pages/content/category",
+        "icon": "&#xe61c;",
+        "spread": false
+      },
+      {
+        "title": "相册管理",
+        "href": "pages/content/photo",
+        "icon": "&#xe61c;",
+        "spread": false
+      }
+    ]
+  },
+  {
     "title": "文本编辑",
     "href": "",
     "icon": "&#xe636;",

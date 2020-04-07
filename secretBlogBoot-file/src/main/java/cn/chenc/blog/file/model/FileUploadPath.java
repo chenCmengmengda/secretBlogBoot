@@ -10,7 +10,9 @@ public enum FileUploadPath {
 
     USER_IMG("user_images/"),
 
-    ARTICLE_IMG("article_images/"),
+    ARTICLE_IMG("article_images/"),//文章图片上传地址
+
+    PHOTO("photo/"),//相册图片上传地址
     ;
     private String path;
 

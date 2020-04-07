@@ -24,6 +24,8 @@ secretBlog的springboot版本
 #### 软件架构
 springboot
 
+springSecurity
+
 mybatis-plus
 
 redis
