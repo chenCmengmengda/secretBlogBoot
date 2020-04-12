@@ -298,7 +298,11 @@ public class LocalApiClient extends BaseApiClient {
                     String type = FileUtil.getFileType(f); // 获取文件类型
                     fileModel.setType(type);
                     fileModel.setFilePath(dir+f.getName()); // 文件地址
-                    fileModel.setUrl(this.serverUrl+ FileConstant.LOCAL_URL_API_PREFIX +dir+f.getName()); //带域名的完整地址
+                    if(useNginx && !StringUtils.isEmpty(nginxUrl)){
+                        fileModel.setUrl(this.nginxUrl+dir+f.getName()); //带域名的完整地址
+                    } else {
+                        fileModel.setUrl(this.serverUrl + FileConstant.LOCAL_URL_API_PREFIX + dir + f.getName()); //带域名的完整地址
+                    }
                     // 获取文件类型
                     String contentType = FileUtil.getContentType(f);
                     // 筛选文件类型

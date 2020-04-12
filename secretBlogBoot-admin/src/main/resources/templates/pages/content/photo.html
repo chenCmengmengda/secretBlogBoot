@@ -67,33 +67,41 @@
         <div class="layui-inline">
             <a class="layui-btn layui-btn-sm uploadNewImg">上传新图片</a>
         </div>
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-sm uploadConfig">上传配置</a>
+        </div>
     </blockquote>
     <ul class="layer-photos-demo" id="Images"></ul>
 </form>
 <script type="text/javascript" src="../../lib/layui/layui.js"></script>
 <script type="text/javascript" >
-    layui.use(["element", "form", "laydate", "okLayer", "okUtils","jquery",'flow','upload','layer'], function () {
+    layui.use(["element", "form", "laydate", "okLayer", "okUtils","jquery",'flow','upload','layer','okLayer'], function () {
         var flow = layui.flow,
             form = layui.form,
             layer = layui.layer,
             upload = layui.upload,
             $ = layui.jquery;
+        var okLayer=layui.okLayer;
+        let okUtils=layui.okUtils;
         okLoading.close();
 
         //流加载图片
         var imgNums = 15;  //单页显示图片数量
+        var photoList=[];
         flow.load({
             elem: '#Images', //流加载容器
             done: function(page, next){ //加载下一页
-                $.get("../../data/images.json",function(res){
+                $.get("/photo/list",function(res){
                     //模拟插入
                     var imgList = [],data = res.data;
                     var maxPage = imgNums*page < data.length ? imgNums*page : data.length;
                     setTimeout(function(){
                         for(var i=imgNums*(page-1); i<maxPage; i++){
-                            imgList.push('<li><img layer-src="../../'+ data[i].src +'" src="../../'+ data[i].thumb +'" alt="'+data[i].alt+'"><div class="operate"><div class="check"><input type="checkbox" name="belle" lay-filter="choose" lay-skin="primary" title="'+data[i].alt+'"></div><i class="layui-icon img_del">&#xe640;</i></div></li>');
+                            imgList.push('<li><img layer-pid="'+data[i].id+'" layer-index="'+i+'" layer-src="'+ data[i].url +'" src="'+ data[i].smUrl +'" alt="'+data[i].title+'"><div class="operate"><div class="check"><input type="checkbox" name="belle" lay-filter="choose" lay-skin="primary" value='+data[i].id+' title="'+data[i].title+'"></div><i class="layui-icon img_del">&#xe640;</i></div></li>');
+                            photoList.push({pid:data[i].id,alt:data[i].title,src:data[i].url,thumb:data[i].smUrl});
                         }
                         next(imgList.join(''), page < (data.length/imgNums));
+                        $("#Images li img").height($("#Images li img").width());
                         form.render();
                     }, 500);
                 });
@@ -111,18 +119,24 @@
         $("body").on("click","#Images img",function(){
 
             console.log($(this).attr('layer-src'));//获取元素属性
+            var src=$(this).attr('layer-src');
+            var thumb=$(this).attr('src');
+            var alt=$(this).attr('alt');
+            var index=$(this).attr('layer-index');
+            console.log(index);
             var res={
                 "title": "图片管理",
                 "id": "Images",
-                "start": 0,
-                "data": [
-                    {
-                        "src": "/images/userface1.jpg",
-                        "thumb": "/images/userface1.jpg",
-                        "alt": "美女生活照1",
-                        "pid":"1"
-                    }
-                ]
+                "start": index,
+                "data": photoList
+                //     [
+                //     {
+                //         "src": src,
+                //         "thumb": thumb,
+                //         "alt": alt,
+                //         "pid":"1"
+                //     }
+                // ]
             }
             layer.photos({
                 photos: res,
@@ -150,18 +164,33 @@
         })
 
         //全选
+        var selectedIds=[];//图片勾选
         form.on('checkbox(selectAll)', function(data){
             var child = $("#Images li input[type='checkbox']");
+            if(data.elem.checked == false){
+                selectedIds=[];
+            }
             child.each(function(index, item){
+            //    console.log(item.checked);
+                if(item.checked != true){
+                    selectedIds.push(item.value);
+                }
                 item.checked = data.elem.checked;
             });
             form.render('checkbox');
+            console.log(selectedIds);
         });
 
         //通过判断是否全部选中来确定全选按钮是否选中
         form.on("checkbox(choose)",function(data){
             var child = $(data.elem).parents('#Images').find('li input[type="checkbox"]');
             var childChecked = $(data.elem).parents('#Images').find('li input[type="checkbox"]:checked');
+            if(data.elem.checked){
+                selectedIds.push(data.elem.value);
+            } else{
+                selectedIds.splice($.inArray(data.elem.value,selectedIds),1);
+            }
+            console.log(selectedIds);
             if(childChecked.length == child.length){
                 $(data.elem).parents('#Images').siblings("blockquote").find('input#selectAll').get(0).checked = true;
             }else{
@@ -170,24 +199,48 @@
             form.render('checkbox');
         })
 
+        //进入添加页面
+        $('.uploadNewImg').click(function(){
+            okLayer.open("添加图片", "photo-add", "90%", "90%", null, function () {
+                window.location.reload();
+            })
+        });
+
+        //进入上传配置页面
+        $('.uploadConfig').click(function(){
+            okLayer.open("添加图片", "photo-config", "90%", "90%", null, function () {
+
+            })
+        });
+
+
         //批量删除
         $(".batchDel").click(function(){
             var $checkbox = $('#Images li input[type="checkbox"]');
             var $checked = $('#Images li input[type="checkbox"]:checked');
             if($checkbox.is(":checked")){
+                console.log(selectedIds);
+                console.log($('#Images li input[type="checkbox"]:checked').length);
+                var ids=okUtils.normalCkecked($('#Images li input[type="checkbox"]:checked'));//获取check的选择值
+                console.log(ids);
                 layer.confirm('确定删除选中的图片？',{icon:3, title:'提示信息'},function(index){
                     var index = layer.msg('删除中，请稍候',{icon: 16,time:false,shade:0.8});
-                    setTimeout(function(){
+                    console.log(selectedIds);
+                    okUtils.ajax("/photo/del", "get", {ids: ids}, true).done(function (response) {
+                        console.log(response);
                         //删除数据
                         $checked.each(function(){
                             $(this).parents("li").hide(1000);
                             setTimeout(function(){$(this).parents("li").remove();},950);
-                        })
+                        });
                         $('#Images li input[type="checkbox"],#selectAll').prop("checked",false);
                         form.render();
                         layer.close(index);
-                        layer.msg("删除成功");
-                    },2000);
+                        okLayer.greenTickMsg(response.message, function () {
+                        });
+                    }).fail(function (error) {
+                        console.log(error)
+                    });
                 })
             }else{
                 layer.msg("请选择需要删除的图片");

@@ -253,4 +253,31 @@ public class FileApiController {
         return fileResponse;
     }
 
+    /**
+     * @description: 上传相册图片
+     * @param [file]
+     * @return java.lang.Object
+     * @throws
+     * @author 陈_C
+     * @date 2020/4/12 陈_C
+     */
+    @ResponseBody
+    @PostMapping("/uploadPhoto")
+    public Object uploadPhoto(@RequestParam MultipartFile file){
+        //String storageType = request.getParameter("storageType")==null?"local":request.getParameter("storageType");
+        Map<String,String> map=configService.getConfigs(ConfigTypeEnum.PHOTO.getType());
+        String dir=FileUploadPath.PHOTO.getPath();//设置默认上传目录
+        if(map.get("dir")!=null){
+            dir=map.get("dir");
+        }
+        //uploadType = uploadType.startsWith("/")?uploadType.substring(1):uploadType;
+        FileUploader uploader = new GlobalFileUploader();
+        FileUploadResponse response = uploader.uploadImg(file, dir);
+        if(useNginx) {
+            response.setUrl(nginxUrl+response.getFilePath());
+            response.setSmUrl(nginxUrl+response.getSmUrl());
+        }
+        return response;
+    }
+
 }

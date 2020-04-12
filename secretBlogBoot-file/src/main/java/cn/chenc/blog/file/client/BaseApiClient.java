@@ -82,7 +82,7 @@ public abstract class BaseApiClient implements ApiClient {
      */
     @Override
     public FileUploadResponse uploadImg(MultipartFile file) {
-        if(FileUtil.isImg(FileUtil.getSuffix(file.getOriginalFilename()))){
+        if(!FileUtil.isImg(FileUtil.getSuffix(file.getOriginalFilename()))){
             throw new FileUploadException("不是图片文件，上传失败");
         }
         if (file == null) {

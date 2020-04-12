@@ -96,6 +96,23 @@ layui.define(["layer"], function (exprots) {
                 layer.msg("未选择有效数据", {offset: "t", anim: 6});
             }
         },
+        normalCkecked:function(element){
+            console.log(element);
+            var idsStr = "";
+            for (var i = 0; i < element.length; i++) {
+                if(i != element.length-1) {
+                    idsStr += element.eq(i).val() + ",";
+                } else{
+                    idsStr += element.eq(i).val()
+                }
+            }
+            return idsStr;
+        },
+        /**
+         * 获取树id
+         * @param treeData
+         * @returns {string}
+         */
         treeChecked: function(treeData){
             console.log(treeData);
             console.log(treeData.length==0);

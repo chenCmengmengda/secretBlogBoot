@@ -5,6 +5,8 @@ public enum ConfigTypeEnum {
     SYSTEM("system"),
 
     UPLOAD("upload"),
+
+    PHOTO("photo")
     ;
     private String type;
 
