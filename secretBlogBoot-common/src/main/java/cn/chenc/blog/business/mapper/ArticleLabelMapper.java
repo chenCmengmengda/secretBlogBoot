@@ -1,6 +1,6 @@
 package cn.chenc.blog.business.mapper;
 
-import cn.chenc.blog.business.entity.ArticleCategoryKey;
+import cn.chenc.blog.business.entity.ArticleLabel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
  * </p>
  *
  * @author chenc
- * @since 2020-04-07
+ * @since 2020-04-13
  */
 @Mapper
 @Repository
-public interface ArticleCategoryKeyMapper extends BaseMapper<ArticleCategoryKey> {
+public interface ArticleLabelMapper extends BaseMapper<ArticleLabel> {
 
 }

@@ -1,6 +1,6 @@
 package cn.chenc.blog.business.service;
 
-import cn.chenc.blog.business.entity.ArticleCategory;
+import cn.chenc.blog.business.entity.ArticleLabelKey;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author chenc
  * @since 2020-04-13
  */
-public interface ArticleCategoryService extends IService<ArticleCategory> {
+public interface ArticleLabelKeyService extends IService<ArticleLabelKey> {
 
 }

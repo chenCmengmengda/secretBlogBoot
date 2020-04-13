@@ -15,14 +15,17 @@ import java.time.LocalDateTime;
  * @author chenc
  * @since 2020-04-13
  */
-@TableName("article_category")
-public class ArticleCategory implements Serializable {
+@TableName("article_label")
+public class ArticleLabel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    /**
+     * 标签名称
+     */
     private String name;
 
     private LocalDateTime createTime;
@@ -64,7 +67,7 @@ public class ArticleCategory implements Serializable {
 
     @Override
     public String toString() {
-        return "ArticleCategory{" +
+        return "ArticleLabel{" +
         "id=" + id +
         ", name=" + name +
         ", createTime=" + createTime +

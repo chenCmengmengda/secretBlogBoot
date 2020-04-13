@@ -1,6 +1,6 @@
 package cn.chenc.blog.business.mapper;
 
-import cn.chenc.blog.business.entity.Article;
+import cn.chenc.blog.business.entity.ArticleLabelKey;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository
-public interface ArticleMapper extends BaseMapper<Article> {
+public interface ArticleLabelKeyMapper extends BaseMapper<ArticleLabelKey> {
 
 }

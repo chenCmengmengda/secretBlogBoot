@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * </p>
  *
  * @author chenc
- * @since 2020-04-07
+ * @since 2020-04-13
  */
 @Controller
-@RequestMapping("/articleCategoryKey")
-public class ArticleCategoryKeyController {
+@RequestMapping("/articleLabelKey")
+public class ArticleLabelKeyController {
 
 }
 

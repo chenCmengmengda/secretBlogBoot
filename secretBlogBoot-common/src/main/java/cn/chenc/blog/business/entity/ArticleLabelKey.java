@@ -12,10 +12,10 @@ import java.io.Serializable;
  * </p>
  *
  * @author chenc
- * @since 2020-04-07
+ * @since 2020-04-13
  */
-@TableName("article_category_key")
-public class ArticleCategoryKey implements Serializable {
+@TableName("article_label_key")
+public class ArticleLabelKey implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class ArticleCategoryKey implements Serializable {
     /**
      * 类别id
      */
-    private Integer categoryId;
+    private Integer labelId;
 
 
     public Integer getId() {
@@ -49,20 +49,20 @@ public class ArticleCategoryKey implements Serializable {
         this.articleId = articleId;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Integer getLabelId() {
+        return labelId;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setLabelId(Integer labelId) {
+        this.labelId = labelId;
     }
 
     @Override
     public String toString() {
-        return "ArticleCategoryKey{" +
+        return "ArticleLabelKey{" +
         "id=" + id +
         ", articleId=" + articleId +
-        ", categoryId=" + categoryId +
+        ", labelId=" + labelId +
         "}";
     }
 }

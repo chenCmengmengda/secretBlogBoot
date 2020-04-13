@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author chenc
- * @since 2020-04-07
+ * @since 2020-04-13
  */
 @TableName("article")
 public class Article implements Serializable {
@@ -66,6 +66,11 @@ public class Article implements Serializable {
      * 是否公开,0是,1否
      */
     private Integer ispublic;
+
+    /**
+     * 类别id
+     */
+    private Integer categoryId;
 
 
     public Integer getId() {
@@ -156,6 +161,14 @@ public class Article implements Serializable {
         this.ispublic = ispublic;
     }
 
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
@@ -170,6 +183,7 @@ public class Article implements Serializable {
         ", releaseTime=" + releaseTime +
         ", istop=" + istop +
         ", ispublic=" + ispublic +
+        ", categoryId=" + categoryId +
         "}";
     }
 }

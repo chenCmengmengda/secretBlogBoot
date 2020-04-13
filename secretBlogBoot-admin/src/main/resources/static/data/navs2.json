@@ -334,7 +334,13 @@
       },
       {
         "title": "文章类别",
-        "href": "pages/content/category",
+        "href": "pages/content/articleCategory",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "标签管理",
+        "href": "pages/content/articleLabel",
         "icon": "&#xe62e;",
         "spread": false
       },

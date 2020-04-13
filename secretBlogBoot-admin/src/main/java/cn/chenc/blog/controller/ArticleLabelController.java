@@ -2,8 +2,8 @@ package cn.chenc.blog.controller;
 
 
 import cn.chenc.blog.business.annoation.BussinessLog;
-import cn.chenc.blog.business.entity.ArticleCategory;
-import cn.chenc.blog.business.service.ArticleCategoryService;
+import cn.chenc.blog.business.entity.ArticleLabel;
+import cn.chenc.blog.business.service.ArticleLabelService;
 import cn.chenc.blog.framework.object.ResponseVO;
 import cn.chenc.blog.utils.ResultUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -26,39 +26,48 @@ import java.util.List;
  * @since 2020-04-13
  */
 @Controller
-@RequestMapping("/articleCategory")
-public class ArticleCategoryController {
+@RequestMapping("/articleLabel")
+public class ArticleLabelController {
 
     @Autowired
-    private ArticleCategoryService articleCategoryService;
+    private ArticleLabelService articleLabelService;
 
+    /**
+     * @description: 查询标签列表
+     * @param [page, size]
+     * @return cn.chenc.blog.framework.object.ResponseVO
+     * @throws
+     * @author 陈_C
+     * @date 2020/4/13 陈_C
+     */
+    @BussinessLog("查询文章标签列表")
     @ResponseBody
     @RequestMapping("/list")
-    public ResponseVO getarticleCategoryList(int page,int size){
+    public ResponseVO getArticleLabelList(int page,int size){
         IPage iPage=new Page(page,size);
-        IPage list=articleCategoryService.page(iPage,null);
+        IPage list=articleLabelService.page(iPage,null);
         return ResultUtil.success(list);
     }
 
     /**
-     * @description: 添加文章类别
-     * @param [sysUser]
+     * @description: 添加文章标签
+     * @param [articleLabel]
      * @return cn.chenc.blog.framework.object.ResponseVO
      * @throws
      * @author 陈_C
      * @date 2020/4/1 陈_C
      */
-    @BussinessLog("添加文章类别")
+    @BussinessLog("添加文章标签")
     @ResponseBody
     @RequestMapping("/add")
-    public ResponseVO addSysUser(ArticleCategory articleCategory){
-        List<ArticleCategory> list=articleCategoryService.list(new QueryWrapper<ArticleCategory>()
-                .eq("name",articleCategory.getName()));//判断用户名是否存在
+    public ResponseVO addSysUser(ArticleLabel articleLabel){
+        List<ArticleLabel> list=articleLabelService.list(new QueryWrapper<ArticleLabel>()
+                .eq("name",articleLabel.getName()));//判断用户名是否存在
         if(list.size()>0){
             return ResultUtil.error("类别已存在");
         }
 
-        boolean bool=articleCategoryService.save(articleCategory);
+        boolean bool=articleLabelService.save(articleLabel);
         if(bool){
             return ResultUtil.success("添加成功");
         } else{
@@ -68,24 +77,24 @@ public class ArticleCategoryController {
     }
 
     /**
-     * @description: 修改文章类别
-     * @param [sysUser, request]
+     * @description: 修改文章标签
+     * @param [articleLabel]
      * @return cn.chenc.blog.framework.object.ResponseVO
      * @throws
      * @author 陈_C
      * @date 2020/4/1 陈_C
      */
-    @BussinessLog("修改文章类别")
+    @BussinessLog("修改文章标签")
     @ResponseBody
     @RequestMapping("/edit")
-    public ResponseVO editSysUser(ArticleCategory articleCategory){
-        List<ArticleCategory> list=articleCategoryService.list(new QueryWrapper<ArticleCategory>()
-                .eq("name",articleCategory.getName())
-                .ne("id",articleCategory.getId()));//判断用户名是否存在
+    public ResponseVO editSysUser(ArticleLabel articleLabel){
+        List<ArticleLabel> list=articleLabelService.list(new QueryWrapper<ArticleLabel>()
+                .eq("name",articleLabel.getName())
+                .ne("id",articleLabel.getId()));//判断用户名是否存在
         if(list.size()>0){
             return ResultUtil.error("类别已存在");
         }
-        boolean bool=articleCategoryService.updateById(articleCategory);
+        boolean bool=articleLabelService.updateById(articleLabel);
         if(bool){
             return ResultUtil.success("修改成功");
         } else{
@@ -101,19 +110,18 @@ public class ArticleCategoryController {
      * @author 陈_C
      * @date 2020/4/1 陈_C
      */
-    @BussinessLog("删除文章类别")
+    @BussinessLog("删除文章标签")
     @ResponseBody
     @RequestMapping("/del")
     public ResponseVO delSysUser(Integer[] ids){
         List<Integer> list= Arrays.asList(ids);
-        boolean bool=articleCategoryService.removeByIds(list);
+        boolean bool=articleLabelService.removeByIds(list);
         if(bool){
             return ResultUtil.success("删除成功");
         } else{
             return ResultUtil.error("删除失败");
         }
     }
-
 
 }
 

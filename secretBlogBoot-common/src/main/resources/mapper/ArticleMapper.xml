@@ -15,6 +15,7 @@
         <result column="release_time" property="releaseTime" />
         <result column="istop" property="istop" />
         <result column="ispublic" property="ispublic" />
+        <result column="category_id" property="categoryId" />
     </resultMap>
 
 </mapper>

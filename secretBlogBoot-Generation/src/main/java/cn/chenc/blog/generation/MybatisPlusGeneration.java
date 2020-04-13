@@ -49,7 +49,7 @@ public class MybatisPlusGeneration {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setTablePrefix(new String[] { "" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] { "photo","article","article_category","article_category_key" }); // 需要生成的表
+        strategy.setInclude(new String[] { "article","article_category","article_label_key" ,"article_label"}); // 需要生成的表
 
         strategy.setSuperServiceClass(null);
         strategy.setSuperServiceImplClass(null);
