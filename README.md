@@ -66,7 +66,7 @@ mysql 5.7
 3.  xxxx
 
 #### 联系作者
-<a target="_blank" href="tencent://message/?uin=1029693356&amp;Site=有事Q我&amp;Menu=yes">
+<a target="_blank" href="//tencent://message/?uin=1029693356&amp;Site=有事Q我&amp;Menu=yes">
 <img src="//pub.idqqimg.com/wpa/images/counseling_style_52.png" title="点击这里给我发消息" border="0"></a>
 
 #### 参与贡献
