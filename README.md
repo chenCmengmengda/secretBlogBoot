@@ -66,7 +66,7 @@ mysql 5.7
 3.  xxxx
 
 ### 联系作者
-<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2::52" alt="点击这里给我发消息" title="qq:1029693356"/></a>
+<a href="tencent://message/?uin=1029693356&amp;Site=有事Q我&amp;Menu=yes">QQ:1029693356</a>
 
 #### 参与贡献
 
