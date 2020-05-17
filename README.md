@@ -59,12 +59,6 @@ mysql 5.7
 
 5.登录:secretC  111111
 
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
 #### 联系作者
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1029693356&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1029693356:41" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
 
