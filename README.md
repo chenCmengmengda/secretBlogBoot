@@ -49,10 +49,11 @@ mysql 5.7
 
 
 #### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.maven导包
+2.common工程下application-center中修改数据库连接
+3.运行BlogAdminApplication
+4.访问localhost:8086
+5.默认登录:secretC  111111
 
 #### 使用说明
 
