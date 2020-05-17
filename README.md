@@ -21,6 +21,8 @@ secretBlog的springboot版本
 
 * 日志管理：用于记录用户对系统的操作。（未完成）
 
+* 后面想到什么做什么
+
 #### 软件架构
 springboot
 
@@ -33,6 +35,18 @@ redis
 mysql 5.7
 
 后台采用OK-ADMIN模板
+
+#### 截图
+![avatar](http://secret_c.gitee.io/secretblogboot/img1.png)
+![avatar](http://secret_c.gitee.io/secretblogboot/img2.png)
+![avatar](http://secret_c.gitee.io/secretblogboot/img3.png)
+![avatar](http://secret_c.gitee.io/secretblogboot/img4.png)
+![avatar](http://secret_c.gitee.io/secretblogboot/img5.png)
+![avatar](http://secret_c.gitee.io/secretblogboot/img6.png)
+
+
+
+
 
 #### 安装教程
 
