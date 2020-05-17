@@ -66,7 +66,7 @@ mysql 5.7
 3.  xxxx
 
 ### 联系作者
-<a href="tencent://message/?uin=1029693356&amp;Site=有事Q我&amp;Menu=yes">QQ:1029693356</a>
+<a target="_blank" href="tencent://message/?uin=1029693356&amp;Site=有事Q我&amp;Menu=yes">QQ:1029693356</a>
 
 #### 参与贡献
 
