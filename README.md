@@ -53,11 +53,16 @@ mysql 5.7
 
 2.common工程下application-center中修改数据库连接
 
-3.运行BlogAdminApplication
+3.导入doc/sql下的sql文件
 
-4.访问localhost:8086
+4.运行BlogAdminApplication
 
-5.登录:secretC  111111
+5.访问localhost:8086
+
+6.登录:secretC  111111
+
+#### 使用说明
+待续
 
 #### 联系作者
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1029693356&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1029693356:41" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
@@ -75,7 +80,7 @@ mysql 5.7
 
 * 广大的开源爱好者
 
-* [ok-admin](https://www.baidu.com/s?ie=UTF-8&wd=ok-admin) 一款开源的layui后台管理模板
+* [ok-admin](http://ok-admin.xlbweb.cn/) 一款开源的layui后台管理模板
 
 * [javabb-fs](https://gitee.com/imqinbao/javabb-fs) 文件服务器，支持本地和第三方云存储
 
