@@ -96,6 +96,17 @@ layui.define(["layer"], function (exprots) {
                 layer.msg("未选择有效数据", {offset: "t", anim: 6});
             }
         },
+        checkFormat:function(str){
+            var formatStr = "";
+            for (var i = 0; i < str.length; i++) {
+                if(i != element.length-1) {
+                    formatStr += element[i].val() + ",";
+                } else{
+                    formatStr += element[i].val();
+                }
+            }
+            return formatStr;
+        },
         normalCkecked:function(element){
             console.log(element);
             var idsStr = "";

@@ -33,6 +33,13 @@ public class ArticleCategoryController {
     private ArticleCategoryService articleCategoryService;
 
     @ResponseBody
+    @RequestMapping("/all")
+    public ResponseVO selectAll(){
+        List<ArticleCategory> list=articleCategoryService.list(null);
+        return ResultUtil.success(list);
+    }
+
+    @ResponseBody
     @RequestMapping("/list")
     public ResponseVO getarticleCategoryList(int page,int size){
         IPage iPage=new Page(page,size);

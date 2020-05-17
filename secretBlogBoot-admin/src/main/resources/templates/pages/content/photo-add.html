@@ -83,6 +83,7 @@
         });
 
         form.on("submit(add)", function (data) {
+            console.log(data.field);
             okUtils.ajax("/photo/add", "post", data.field, true).done(function (response) {
                 console.log(response);
                 okLayer.greenTickMsg("添加成功", function () {

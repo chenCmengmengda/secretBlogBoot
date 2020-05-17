@@ -280,4 +280,23 @@ public class FileApiController {
         return response;
     }
 
+    @ResponseBody
+    @PostMapping("/uploadArticle")
+    public Object uploadArticle(@RequestParam MultipartFile file){
+        //String storageType = request.getParameter("storageType")==null?"local":request.getParameter("storageType");
+        Map<String,String> map=configService.getConfigs(ConfigTypeEnum.ARTICLE.getType());
+        String dir=FileUploadPath.ARTICLE_IMG.getPath();//设置默认上传目录
+        if(map.get("dir")!=null){
+            dir=map.get("dir");
+        }
+        //uploadType = uploadType.startsWith("/")?uploadType.substring(1):uploadType;
+        FileUploader uploader = new GlobalFileUploader();
+        FileUploadResponse response = uploader.uploadImg(file, dir);
+        if(useNginx) {
+            response.setUrl(nginxUrl+response.getFilePath());
+            response.setSmUrl(nginxUrl+response.getSmUrl());
+        }
+        return response;
+    }
+
 }

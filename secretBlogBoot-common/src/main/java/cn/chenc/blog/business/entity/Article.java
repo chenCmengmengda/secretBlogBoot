@@ -1,6 +1,7 @@
 package cn.chenc.blog.business.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -48,9 +49,9 @@ public class Article implements Serializable {
      */
     private Integer status;
 
-    private LocalDateTime createTime;
+    private LocalDateTime createTime=LocalDateTime.now();
 
-    private LocalDateTime updateTime;
+    private LocalDateTime updateTime=LocalDateTime.now();
 
     /**
      * 发布时间
@@ -72,6 +73,46 @@ public class Article implements Serializable {
      */
     private Integer categoryId;
 
+    private Integer favorNum;
+
+    private Integer readNum;
+
+    private Integer collectNum;
+
+    @TableField(exist = false)
+    private Integer[] labelIds;
+
+    public void setLabelIds(Integer[] labelIds) {
+        this.labelIds = labelIds;
+    }
+
+    public Integer[] getLabelIds() {
+        return labelIds;
+    }
+
+    public Integer getFavorNum() {
+        return favorNum;
+    }
+
+    public void setFavorNum(Integer favorNum) {
+        this.favorNum = favorNum;
+    }
+
+    public Integer getReadNum() {
+        return readNum;
+    }
+
+    public void setReadNum(Integer readNum) {
+        this.readNum = readNum;
+    }
+
+    public Integer getCollectNum() {
+        return collectNum;
+    }
+
+    public void setCollectNum(Integer collectNum) {
+        this.collectNum = collectNum;
+    }
 
     public Integer getId() {
         return id;

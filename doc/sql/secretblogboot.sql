@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50720
 File Encoding         : 65001
 
-Date: 2020-04-13 21:07:24
+Date: 2020-05-17 20:08:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,12 +32,16 @@ CREATE TABLE `article` (
   `istop` int(11) DEFAULT '1' COMMENT '置顶,0是,1否',
   `ispublic` int(11) DEFAULT NULL COMMENT '是否公开,0是,1否',
   `category_id` int(11) DEFAULT NULL COMMENT '类别id',
+  `favor_num` int(11) DEFAULT '0' COMMENT '点赞数',
+  `read_num` int(11) DEFAULT '0' COMMENT '阅读数',
+  `collect_num` int(11) DEFAULT '0' COMMENT '收藏数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='文章表';
 
 -- ----------------------------
 -- Records of article
 -- ----------------------------
+INSERT INTO `article` VALUES ('1', '添加标题', '添加内容', '# 添加内容', 'http://localhost/upload/article_images/20200517180632776.jpg', '0', null, null, null, '0', '0', '1', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `article_category`
@@ -49,7 +53,7 @@ CREATE TABLE `article_category` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='文章分类表';
 
 -- ----------------------------
 -- Records of article_category
@@ -67,7 +71,7 @@ CREATE TABLE `article_label` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='文章标签表';
 
 -- ----------------------------
 -- Records of article_label
@@ -84,11 +88,13 @@ CREATE TABLE `article_label_key` (
   `article_id` int(11) DEFAULT NULL COMMENT '文章id',
   `label_id` int(11) DEFAULT NULL COMMENT '类别id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='文章-标签关联表';
 
 -- ----------------------------
 -- Records of article_label_key
 -- ----------------------------
+INSERT INTO `article_label_key` VALUES ('1', '1', '1');
+INSERT INTO `article_label_key` VALUES ('2', '1', '2');
 
 -- ----------------------------
 -- Table structure for `persistent_logins`
@@ -105,8 +111,11 @@ CREATE TABLE `persistent_logins` (
 -- ----------------------------
 -- Records of persistent_logins
 -- ----------------------------
+INSERT INTO `persistent_logins` VALUES ('secretC', '+Yij040aDk4xOYrTqEPZOQ==', 'IFIe20zAoB4OhhUjb/e0uQ==', '2020-05-17 19:12:51');
 INSERT INTO `persistent_logins` VALUES ('secretC', 'caA0ZYQLHFirIEqYeQF67g==', 'Ec/1ulquA5Nzt1dZCpVeXQ==', '2020-04-13 21:03:49');
+INSERT INTO `persistent_logins` VALUES ('secretC', 'RO3rMrs8CMrtDmOIrEbn/A==', 'IPYZuYKCcYn2AUoQHqdVCg==', '2020-05-07 21:36:47');
 INSERT INTO `persistent_logins` VALUES ('secretC', 'vLUoPrI5mzJGFHw9qgfRqw==', 'yARhLt0Dt/XA57nj+1fpig==', '2020-04-12 22:46:19');
+INSERT INTO `persistent_logins` VALUES ('secretC', 'xtws+T/A8glplfrTUQxF1A==', 'bFLIhaQuzFdg2r30OFtyZg==', '2020-05-17 18:06:19');
 
 -- ----------------------------
 -- Table structure for `photo`
@@ -118,12 +127,14 @@ CREATE TABLE `photo` (
   `url` varchar(100) DEFAULT NULL COMMENT '图片路径',
   `sm_url` varchar(100) DEFAULT NULL COMMENT '缩略图路径',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of photo
 -- ----------------------------
 INSERT INTO `photo` VALUES ('2', '飞燕', 'http://localhost/upload/photo/20200412195838091.jpg', 'http://localhost/upload/sm/photo/20200412195838091.jpg');
+INSERT INTO `photo` VALUES ('3', '上传测试', 'http://localhost/upload/photo/20200517174746564.jpg', 'http://localhost/upload/sm/photo/20200517174746564.jpg');
+INSERT INTO `photo` VALUES ('4', '上传测试', 'http://localhost/upload/photo/20200517174920374.jpg', 'http://localhost/upload/sm/photo/20200517174920374.jpg');
 
 -- ----------------------------
 -- Table structure for `sys_config`
@@ -139,7 +150,7 @@ CREATE TABLE `sys_config` (
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_config
@@ -153,6 +164,7 @@ INSERT INTO `sys_config` VALUES ('9', 'uuidName', 'upload', 'uuidName', '1', nul
 INSERT INTO `sys_config` VALUES ('10', '文件地址前缀', 'upload', 'rootPath', 'E:/upload/secretBlog/', null, '2020-03-28 18:11:33', '2020-03-28 18:11:33');
 INSERT INTO `sys_config` VALUES ('11', '开启缩略图', 'upload', 'useSm', '1', null, '2020-03-28 18:11:57', '2020-03-28 18:11:57');
 INSERT INTO `sys_config` VALUES ('12', '相册上传目录', 'photo', 'dir', '/photo/', null, '2020-04-05 11:04:49', '2020-04-05 11:08:37');
+INSERT INTO `sys_config` VALUES ('13', '文章图片上传目录', 'article', 'dir', '/article_images/', null, '2020-05-17 15:37:21', '2020-05-17 15:37:21');
 
 -- ----------------------------
 -- Table structure for `sys_permission`
@@ -241,5 +253,5 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', 'secretC', '$2a$10$u00C/3gAW6EBBpZjw2mwIeRFicjpp9EwwxNBqjyq7sEJRdX9Z2pte', '0', null, '18', null, null, '1');
+INSERT INTO `sys_user` VALUES ('1', 'secretC', '$2a$10$u00C/3gAW6EBBpZjw2mwIeRFicjpp9EwwxNBqjyq7sEJRdX9Z2pte', '0', null, '24', null, null, '1');
 INSERT INTO `sys_user` VALUES ('3', 'test', '$2a$10$znvvW6D1Cx9Pi5SiRyx4j.Vhdlsjhq8tWfLvMR4rKX/N6At1Zivym', '0', '2873518017@qq.com', '0', null, null, '1');

@@ -6,7 +6,9 @@ public enum ConfigTypeEnum {
 
     UPLOAD("upload"),
 
-    PHOTO("photo")
+    PHOTO("photo"),
+
+    ARTICLE("article")
     ;
     private String type;
 

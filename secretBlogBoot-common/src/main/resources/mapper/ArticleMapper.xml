@@ -16,6 +16,9 @@
         <result column="istop" property="istop" />
         <result column="ispublic" property="ispublic" />
         <result column="category_id" property="categoryId" />
+        <result column="favor_num" property="favorNum" />
+        <result column="read_num" property="readNum" />
+        <result column="collect_num" property="collectNum" />
     </resultMap>
 
 </mapper>

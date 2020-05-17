@@ -32,6 +32,13 @@ public class ArticleLabelController {
     @Autowired
     private ArticleLabelService articleLabelService;
 
+    @ResponseBody
+    @RequestMapping("/all")
+    public ResponseVO selectAll(){
+        List<ArticleLabel> list=articleLabelService.list(null);
+        return ResultUtil.success(list);
+    }
+
     /**
      * @description: 查询标签列表
      * @param [page, size]
