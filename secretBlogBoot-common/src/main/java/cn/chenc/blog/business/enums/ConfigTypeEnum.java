@@ -8,7 +8,9 @@ public enum ConfigTypeEnum {
 
     PHOTO("photo"),
 
-    ARTICLE("article")
+    ARTICLE("article"),
+
+    MEDIA("media")
     ;
     private String type;
 

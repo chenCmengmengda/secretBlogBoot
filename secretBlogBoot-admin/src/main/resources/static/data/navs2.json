@@ -353,6 +353,38 @@
     ]
   },
   {
+    "title":"媒体管理",
+    "href": "",
+    "icon": "&#xe705;",
+    "spread": false,
+    "children":[
+      {
+        "title": "视频管理",
+        "href": "pages/media/video",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "视频栏目",
+        "href": "pages/media/vedio",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "视频索引分类",
+        "href": "pages/media/vedio",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "视频索引管理",
+        "href": "pages/media/vedio",
+        "icon": "&#xe62e;",
+        "spread": false
+      }
+    ]
+  },
+  {
     "title": "网站管理",
     "href": "",
     "icon": "&#xe705;",

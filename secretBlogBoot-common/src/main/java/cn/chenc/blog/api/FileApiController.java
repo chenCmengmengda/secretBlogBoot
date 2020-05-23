@@ -5,11 +5,15 @@ import cn.chenc.blog.business.enums.ConfigKeyEnum;
 import cn.chenc.blog.business.enums.ConfigTypeEnum;
 import cn.chenc.blog.business.plugin.file.GlobalFileUploader;
 import cn.chenc.blog.business.service.SysConfigService;
+import cn.chenc.blog.file.client.ApiClient;
+import cn.chenc.blog.file.client.LocalApiClient;
 import cn.chenc.blog.file.model.FileUploadPath;
 import cn.chenc.blog.file.response.FileResponse;
 import cn.chenc.blog.file.response.FileUploadResponse;
 import cn.chenc.blog.file.uploader.FileUploader;
 import cn.chenc.blog.file.util.FileUtil;
+import cn.chenc.blog.utils.Mp4VideoUtil;
+import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -295,6 +300,43 @@ public class FileApiController {
         if(useNginx) {
             response.setUrl(nginxUrl+response.getFilePath());
             response.setSmUrl(nginxUrl+response.getSmUrl());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("/uploadVideo")
+    public Object uploadVideo(@RequestParam MultipartFile file){
+        //String storageType = request.getParameter("storageType")==null?"local":request.getParameter("storageType");
+        Map<String,String> map=configService.getConfigs(ConfigTypeEnum.MEDIA.getType());
+        String dir=FileUploadPath.MEDIA.getPath();//设置默认上传目录
+        if(map.get("dir")!=null){
+            dir=map.get("dir");
+        }
+        //uploadType = uploadType.startsWith("/")?uploadType.substring(1):uploadType;
+        dir=dir+DateUtil.format(new Date(), "yyyyMMddHHmmssSSS");//根据时间生成目录
+        ApiClient client = new LocalApiClient().init(
+                configMap.get(ConfigKeyEnum.USE_SM.getKey()),
+                configMap.get(ConfigKeyEnum.SERVER_URL.getKey()),
+                configMap.get(ConfigKeyEnum.USE_NGINX.getKey()),
+                configMap.get(ConfigKeyEnum.NGINX_URL.getKey()),
+                configMap.get(ConfigKeyEnum.ROOT_PATH.getKey()),
+                dir
+        );
+//        FileUploader uploader = new GlobalFileUploader();
+//        FileUploadResponse response = uploader.upload(file, dir);
+        FileUploadResponse response = client.upload(file);
+        if(useNginx) {
+            response.setUrl(nginxUrl+response.getFilePath());
+            response.setSmUrl(nginxUrl+response.getSmUrl());
+        }
+        String suffix=FileUtil.getSuffix(response.getFilePath());//获取后缀
+        if(!suffix.equals(".mp4")){
+            //转化为mp4
+            Mp4VideoUtil mp4VideoUtil=new Mp4VideoUtil(null,rootPath+response.getFilePath(),
+                    response.getFilePath().substring(response.getFilePath().lastIndexOf('/')+1,response.getFilePath().lastIndexOf('.'))+".mp4",
+                    rootPath+dir.substring(1)+"/");
+            mp4VideoUtil.generateMp4();
         }
         return response;
     }
