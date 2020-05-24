@@ -8,6 +8,7 @@ import cn.chenc.blog.business.entity.SysUser;
 import cn.chenc.blog.business.enums.PlatformEnum;
 import cn.chenc.blog.business.service.SysUserService;
 import cn.chenc.blog.framework.object.ResponseVO;
+import cn.chenc.blog.security.RedisTokenRepositoryImpl;
 import cn.chenc.blog.utils.BCryptPasswordEncoderUtils;
 import cn.chenc.blog.utils.ResultUtil;
 import cn.chenc.blog.utils.SessionUtil;
@@ -61,8 +62,10 @@ public class SysUserController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private RememberMeServices rememberMeServices;
+//    @Autowired
+//    private PersistentTokenRepository persistentTokenRepository;
     @Autowired
-    private PersistentTokenRepository persistentTokenRepository;
+    private RedisTokenRepositoryImpl redisTokenRepository;
 
 
     /**
@@ -116,7 +119,7 @@ public class SysUserController {
     public ModelAndView logout(HttpServletRequest request,HttpServletResponse response){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
-            new PersistentTokenBasedRememberMeServices("INTERNAL_SECRET_KEY",sysUserService,persistentTokenRepository)
+            new PersistentTokenBasedRememberMeServices("INTERNAL_SECRET_KEY",sysUserService,redisTokenRepository)
                     .logout(request,response,auth);//清理rememberMe
             //new TokenBasedRememberMeServices("INTERNAL_SECRET_KEY",sysUserService).logout(request,response,auth);//清除token
             //new CookieClearingLogoutHandler("remember-me").logout(request, response, auth);//清除cookie

@@ -4,10 +4,12 @@ package cn.chenc.blog.config;
 import cn.chenc.blog.business.service.SysUserService;
 import cn.chenc.blog.security.MyAuthenticationFailHandler;
 import cn.chenc.blog.security.MySuccessHandler;
+import cn.chenc.blog.security.RedisTokenRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -37,6 +39,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //注入数据源
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTokenRepositoryImpl redisTokenRepository;
 
 
 
@@ -52,14 +58,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     //记住我的功能
-    @Bean
-    public PersistentTokenRepository getPersistentTokenRepository() {
-        JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl=new JdbcTokenRepositoryImpl();
-        jdbcTokenRepositoryImpl.setDataSource(dataSource);
-        //启动时创建一张表，这个参数到第二次启动时必须注释掉，因为已经创建了一张表
-    //    jdbcTokenRepositoryImpl.setCreateTableOnStartup(true);
-        return jdbcTokenRepositoryImpl;
-    }
+//    @Bean
+//    public PersistentTokenRepository getPersistentTokenRepository() {
+//        JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl=new JdbcTokenRepositoryImpl();
+//        jdbcTokenRepositoryImpl.setDataSource(dataSource);
+//        //启动时创建一张表，这个参数到第二次启动时必须注释掉，因为已经创建了一张表
+//    //    jdbcTokenRepositoryImpl.setCreateTableOnStartup(true);
+//
+//        return jdbcTokenRepositoryImpl;
+//    }
 
     //SpringSecurity配置信息
     public void configure(HttpSecurity http) throws Exception {
@@ -93,7 +100,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().sameOrigin()// 设置可以iframe访问
                 .and()
                 .rememberMe()
-                .tokenRepository(getPersistentTokenRepository())
+                .rememberMeParameter("remember-me")
+                .tokenRepository(redisTokenRepository)
                 .tokenValiditySeconds(3600)//Token过期时间为一个小时;
                 .userDetailsService(userService)
                 .key("INTERNAL_SECRET_KEY");
@@ -111,7 +119,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     protected RememberMeServices rememberMeServices(){
         PersistentTokenBasedRememberMeServices rememberMeServices =
-                new PersistentTokenBasedRememberMeServices("INTERNAL_SECRET_KEY", userService,getPersistentTokenRepository());
+                new PersistentTokenBasedRememberMeServices("INTERNAL_SECRET_KEY", userService,redisTokenRepository);
 
         // 该参数不是必须的，默认值为 "remember-me", 但如果设置必须和页面复选框的 name 一致
         rememberMeServices.setParameter("remember-me");
