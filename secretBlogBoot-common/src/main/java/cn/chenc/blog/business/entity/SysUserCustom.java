@@ -1,5 +1,9 @@
 package cn.chenc.blog.business.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+
 /**
  * 　@description: TODO
  * 　@author 陈_C
@@ -8,6 +12,7 @@ package cn.chenc.blog.business.entity;
  */
 public class SysUserCustom extends SysUser {
     private SysRole sysRole;
+
 
     public SysRole getSysRole() {
         return sysRole;

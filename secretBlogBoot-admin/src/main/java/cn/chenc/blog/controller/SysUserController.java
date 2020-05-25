@@ -8,6 +8,7 @@ import cn.chenc.blog.business.entity.SysUser;
 import cn.chenc.blog.business.enums.PlatformEnum;
 import cn.chenc.blog.business.service.SysUserService;
 import cn.chenc.blog.framework.object.ResponseVO;
+import cn.chenc.blog.framework.object.UserVo;
 import cn.chenc.blog.security.RedisTokenRepositoryImpl;
 import cn.chenc.blog.utils.BCryptPasswordEncoderUtils;
 import cn.chenc.blog.utils.ResultUtil;
@@ -91,6 +92,8 @@ public class SysUserController {
             Authentication authentication = authenticationManager.authenticate(token);
             rememberMeServices.loginSuccess(request,response,authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            UserVo loginUser=(UserVo) auth.getPrincipal();
             sysUserService.update(new SysUser(),new UpdateWrapper<SysUser>(new SysUser()) {}
                     .setSql("login_num = login_num+1")
                     .eq("username",sysUser.getUsername()));//登录成功更新登录次数

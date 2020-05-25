@@ -6,6 +6,7 @@ import cn.chenc.blog.business.mapper.SysRoleMapper;
 import cn.chenc.blog.business.mapper.SysUserMapper;
 import cn.chenc.blog.business.service.SysUserService;
 import cn.chenc.blog.framework.object.ResponseVO;
+import cn.chenc.blog.framework.object.UserVo;
 import cn.chenc.blog.utils.ResultUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -56,8 +57,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysRole role= sysRoleMapper.selectById(sysUser.getRoleId());
         List<SysRole> roleList=new ArrayList<SysRole>();
         roleList.add(role);
-        User user = new User(sysUser.getUsername(), sysUser.getPassword(), sysUser.getStatus() == 0 ? true : false, true, true, true, getAuthority(roleList));
 
+
+
+//        User user = new User(sysUser.getUsername(), sysUser.getPassword(), sysUser.getStatus() == 0 ? true : false, true, true, true, getAuthority(roleList));
+        UserVo user=new UserVo(sysUser.getUsername(), sysUser.getPassword(), sysUser.getStatus() == 0 ? true : false, true, true, true, getAuthority(roleList),sysUser.getId(),sysUser.getRoleId());
         return user;
     }
 
