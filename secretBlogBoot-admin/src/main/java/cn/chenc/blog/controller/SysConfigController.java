@@ -1,6 +1,7 @@
 package cn.chenc.blog.controller;
 
 
+import cn.chenc.blog.api.admin.SysConfigControllerApi;
 import cn.chenc.blog.business.annoation.BussinessLog;
 import cn.chenc.blog.business.entity.SysConfig;
 import cn.chenc.blog.business.service.SysConfigService;
@@ -28,7 +29,7 @@ import java.util.List;
 @BussinessLog("系统配置")
 @Controller
 @RequestMapping("/sysConfig")
-public class SysConfigController {
+public class SysConfigController implements SysConfigControllerApi {
 
     @Autowired
     private SysConfigService sysConfigService;

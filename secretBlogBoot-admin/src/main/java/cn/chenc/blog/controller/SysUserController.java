@@ -1,6 +1,7 @@
 package cn.chenc.blog.controller;
 
 
+import cn.chenc.blog.api.admin.SysUserControllerApi;
 import cn.chenc.blog.business.annoation.BussinessLog;
 import cn.chenc.blog.business.annoation.Operation;
 import cn.chenc.blog.business.consts.SessionConst;
@@ -56,7 +57,7 @@ import java.util.Map;
 @BussinessLog("用户管理")
 @Controller
 @RequestMapping("/sysUser")
-public class SysUserController {
+public class SysUserController implements SysUserControllerApi {
     @Autowired
     private SysUserService sysUserService;
     @Autowired

@@ -21,13 +21,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**")
                 //需要配置2：----------- 告知拦截器：/static/admin/** 与 /static/user/** 不需要拦截 （配置的是 路径）
-                .excludePathPatterns( "/css/**","/data/**","/images/**","/js/**","/lib/**","classpath:/static/");
+                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**","swagger-ui.html", "/swagger-ui.html/**","/css/**","/data/**","/images/**","/js/**","/lib/**","classpath:/static/");
+
     }
+
+
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
 
 
     }

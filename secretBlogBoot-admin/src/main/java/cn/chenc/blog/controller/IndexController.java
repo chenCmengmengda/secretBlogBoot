@@ -57,11 +57,11 @@ public class IndexController {
      * @param page
      * @return
      */
-    @RequestMapping("/{page}")
-    public ModelAndView showpage(@PathVariable String page) {
-
-        return ResultUtil.view(page);
-    }
+//    @RequestMapping("/{page}")
+//    public ModelAndView showpage(@PathVariable String page) {
+//
+//        return ResultUtil.view(page);
+//    }
 
 
 
@@ -69,6 +69,11 @@ public class IndexController {
     public ModelAndView index() {
 
         return ResultUtil.view("index");
+    }
+
+    @RequestMapping("/welcome")
+    public ModelAndView toWelcome() {
+        return ResultUtil.view("welcome");
     }
 
     @RequestMapping("/pages/**")

@@ -77,7 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().disable()
 
                 .authorizeRequests()
-                .antMatchers("/pages/login","/getKaptcha","/welcome","/sysUser/login", "/pages/error/403","/pages/error/404","/static/**","/favicon.ico","/css/**","/plugins/**","/js/**","/images/**","/lib/**").permitAll()
+                .antMatchers("/swagger-ui.html","/swagger-resources/**", "/webjars/**", "/v2/**","/pages/login","/getKaptcha","/welcome","/sysUser/login", "/pages/error/403","/pages/error/404","/static/**","/favicon.ico","/css/**","/plugins/**","/js/**","/images/**","/lib/**").permitAll()
                 .antMatchers("/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
