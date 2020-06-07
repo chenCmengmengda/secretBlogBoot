@@ -15,7 +15,7 @@
         <result column="font_family" property="fontFamily" />
         <result column="icon" property="icon" />
         <result column="spread" property="spread" />
-
+        <result column="sort" property="sort"></result>
     </resultMap>
 
     <resultMap id="BaseResultMap2" type="cn.chenc.blog.business.entity.SysPermissionCustom">
@@ -30,6 +30,7 @@
         <result column="font_family" property="fontFamily" />
         <result column="icon" property="icon" />
         <result column="spread" property="spread" />
+        <result column="sort" property="sort"></result>
         <association property="parentPermission" column="pid" select="selectParentPermission" >
         </association>
     </resultMap>
@@ -54,22 +55,22 @@
 
     <!-- 查询子权限 -->
     <select id="selectChildPermission" parameterType="int" resultMap="ResultMap" >
-        select * from sys_permission where pid = #{id} and status = 0
+        select * from sys_permission where pid = #{id} and status = 0 order by sort ASC
     </select>
 
     <!-- 查询子菜单 -->
     <select id="selectChildMenu" parameterType="int" resultMap="ResultMapMenu" >
-        select * from sys_permission where pid = #{id} and status = 0 and type=0
+        select * from sys_permission where pid = #{id} and status = 0 and type=0 order by sort ASC
     </select>
     <select id="selectMenu" resultMap="ResultMapMenu" >
-        select * from sys_permission where pid is null and status = 0
+        select * from sys_permission where pid is null and status = 0 order by sort ASC
     </select>
 
 
 
     <!-- 查询权限树 -->
     <select id="selectTreePermission" resultMap="ResultMap" >
-        select * from sys_permission where pid is null and status = 0
+        select * from sys_permission where pid is null and status = 0 order by sort ASC
     </select>
 
     <!-- 查询父级权限 -->

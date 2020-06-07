@@ -61,6 +61,16 @@ public class SysPermission implements Serializable {
      */
     private Boolean spread;
 
+    private Integer sort;
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
     public String getIcon() {
         return icon;
     }

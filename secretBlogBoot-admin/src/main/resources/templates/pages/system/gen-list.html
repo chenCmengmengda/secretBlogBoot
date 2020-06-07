@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>数据库表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../css/oksub.css">
+    <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
+</head>
+<body>
+<div class="ok-body">
+    <!--模糊搜索区域-->
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 ok-search">
+            <input class="layui-input" placeholder="开始日期" autocomplete="off" id="startTime" name="startTime">
+            <input class="layui-input" placeholder="截止日期" autocomplete="off" id="endTime" name="endTime">
+            <input class="layui-input" placeholder="账号" autocomplete="off" name="username">
+            <button class="layui-btn" lay-submit="" lay-filter="search">
+                <i class="layui-icon">&#xe615;</i>
+            </button>
+        </form>
+    </div>
+    <!--数据表格-->
+    <table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
+</div>
+<!--js逻辑-->
+<script src="../../lib/layui/layui.js"></script>
+<script>
+    layui.use(["element", "jquery", "table", "form", "laydate", "okLayer", "okUtils", "okMock"], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let laydate = layui.laydate;
+        let okLayer = layui.okLayer;
+        let okUtils = layui.okUtils;
+        let okMock = layui.okMock;
+        let $ = layui.jquery;
+
+        laydate.render({elem: "#startTime", type: "datetime"});
+        laydate.render({elem: "#endTime", type: "datetime"});
+        okLoading.close($);
+        let genTable = table.render({
+            elem: '#tableId',
+            url: "/genController/list",
+            limit: 20,
+            page: true,
+            toolbar: true,
+            toolbar: "#toolbarTpl",
+            size: "sm",
+            request: {
+                pageName: 'page', //页码的参数名称，默认：page
+                limitName: 'size' //每页数据量的参数名，默认：limit
+            },
+            cols: [[
+                {type: "checkbox", fixed: "left"},
+                {title: "序号", width: 60, sort: true,type:'numbers'},
+                {field: "tableName", title: "表名称"},
+                {field: "comments", title: "表注释"},
+                {title: "操作", width: 100, align: "center", fixed: "right", templet: "#operationTpl"}
+            ]],
+            done: function (res, curr, count) {
+                console.info(res, curr, count);
+            },
+            response: {
+                statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+            },
+            parseData: function(res){ //将原始数据解析成 table 组件所规定的数据
+                return {
+                    "code": res.status, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.records //解析数据列表
+                };
+            }
+
+        });
+
+        form.on("submit(search)", function (data) {
+            userTable.reload({
+                where: data.field,
+                page: {curr: 1}
+            });
+            return false;
+        });
+
+        table.on("toolbar(tableFilter)", function (obj) {
+            switch (obj.event) {
+                case "batchGen":
+                    batchGen();
+                    break;
+            }
+        });
+
+        table.on("tool(tableFilter)", function (obj) {
+            let data = obj.data;
+            switch (obj.event) {
+                case "gen":
+                    gen(data.tableName);
+                    break;
+            }
+        });
+
+        //代码生成
+        function gen(tableName){
+            var url = "/genController/gen";
+            var form = $("<form></form>").attr("action", url).attr("method", "post");
+            form.append($("<input></input>").attr("type", "hidden").attr("name", "tableNames").attr("value", tableName));
+            form.appendTo('body').submit().remove();
+        }
+
+        //批量生成
+        function batchGen(){
+            var checkStatus = table.checkStatus("tableId");
+            var rows = checkStatus.data.length;
+            var tableNames = "";
+            if (rows > 0) {
+                for (var i = 0; i < checkStatus.data.length; i++) {
+                    if(i != checkStatus.data.length-1) {
+                        tableNames += checkStatus.data[i].tableName + ",";
+                    } else{
+                        tableNames += checkStatus.data[i].tableName
+                    }
+                }
+            } else {
+                layer.msg("未选择有效数据", {offset: "t", anim: 6});
+            }
+            var url = "/genController/gen";
+            var form = $("<form></form>").attr("action", url).attr("method", "post");
+            form.append($("<input></input>").attr("type", "hidden").attr("name", "tableNames").attr("value", tableNames));
+            form.appendTo('body').submit().remove();
+
+        }
+
+
+
+
+
+    })
+</script>
+<!-- 头工具栏模板 -->
+<script type="text/html" id="toolbarTpl">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="batchGen">批量生成</button>
+    </div>
+</script>
+<!-- 行工具栏模板 -->
+<script type="text/html" id="operationTpl">
+    <!--<a href="javascript:" title="编辑" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>-->
+    <!--<a href="javascript:" title="删除" lay-event="del"><i class="layui-icon">&#xe640;</i></a>-->
+    <a class="layui-btn layui-btn-normal layui-btn-xs">生成</a>
+</script>
+<!-- 启用|停用模板 -->
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status == 0){ }}
+    <span class="layui-btn layui-btn-normal layui-btn-xs">已启用</span>
+    {{#  } else if(d.status == 1) { }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs">已停用</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="roleTpl">
+    {{#  if(d.sysRole != null){ }}
+    <span class="layui-btn layui-btn-normal layui-btn-xs">{{d.sysRole.rolename}}</span>
+    {{#  } else  { }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs">未分配</span>
+    {{#  } }}
+</script>
+</body>
+</html>

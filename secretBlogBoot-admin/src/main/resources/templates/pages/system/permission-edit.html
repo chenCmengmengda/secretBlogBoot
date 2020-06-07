@@ -11,6 +11,7 @@
 <div class="ok-body">
     <!--form表单-->
     <form class="layui-form layui-form-pane ok-form" lay-filter="filter">
+        <input name="id" type="hidden">
         <div class="layui-form-item">
             <label class="layui-form-label">权限名称</label>
             <div class="layui-input-block">
@@ -22,14 +23,14 @@
             <label class="layui-form-label">权限路径</label>
             <div class="layui-input-block">
                 <input type="text" name="href" placeholder="请输入权限路径" autocomplete="off" class="layui-input"
-                       lay-verify="required">
+                      >
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">权限标识</label>
             <div class="layui-input-block">
                 <input type="text" name="code" placeholder="请输入权限标识" autocomplete="off" class="layui-input"
-                       lay-verify="required">
+                       >
             </div>
         </div>
         <div class="layui-form-item" >
@@ -81,6 +82,12 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">排序编号</label>
+            <div class="layui-input-block">
+                <input type="text" name="sort" placeholder="请输入排序编号" autocomplete="off" class="layui-input" value="0">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">权限描述</label>
             <div class="layui-input-block">
                 <input type="text" name="description" placeholder="请输入权限描述" autocomplete="off" class="layui-input"
@@ -126,12 +133,13 @@
             ,"pid": data.pid
             ,"href": data.href
             ,"code": data.code
-            ,"superPermissionName": data.parentPermission.title+(data.type==0?'(菜单)':'(功能)')
+            ,"superPermissionName": (data.parentPermission==null?null:data.parentPermission.title+(data.type==0?'(菜单)':'(功能)'))
             ,"description": data.description
             ,"status": data.status==0?"selected":false
             ,"spread": data.spread==true?"selected":false
             ,"fontFamily": data.fontFamily
             ,"icon": data.icon
+            ,"sort":data.sort
         });
 
         okUtils.ajax("/sysPermission/tree", "post", null, true).done(function (response) {//查看权限树
