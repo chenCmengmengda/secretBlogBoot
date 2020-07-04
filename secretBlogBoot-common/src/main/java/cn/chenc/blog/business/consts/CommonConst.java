@@ -10,6 +10,12 @@ package cn.chenc.blog.business.consts;
  * @since 1.0
  */
 public class CommonConst {
+
+    /**
+     * 文件分隔符
+     */
+    public static final String SF_FILE_SEPARATOR = System.getProperty("file.separator");
+
     /**
      * 安全密码(UUID生成)，作为盐值用于用户密码的加密
      */

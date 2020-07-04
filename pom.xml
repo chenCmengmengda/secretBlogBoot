@@ -13,6 +13,7 @@
         <module>secretBlogBoot-Generation</module>
         <module>secretBlogBoot-file</module>
         <module>secretBlogBoot-api</module>
+        <module>secretBlogBoot-web</module>
     </modules>
     <packaging>pom</packaging>
 
