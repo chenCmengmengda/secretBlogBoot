@@ -1,12 +1,12 @@
-package cn.chenc.blog.config;
+package cn.chenc.blog.web.config;
 
 
 import cn.chenc.blog.business.service.SysUserService;
-import cn.chenc.blog.security.MyAuthenticationFailHandler;
-import cn.chenc.blog.security.MySuccessHandler;
-import cn.chenc.blog.security.RedisTokenRepositoryImpl;
+
+import cn.chenc.blog.web.security.MyAuthenticationFailHandler;
+import cn.chenc.blog.web.security.MySuccessHandler;
+import cn.chenc.blog.web.security.RedisTokenRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -19,9 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.RememberMeServices;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -72,6 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //SpringSecurity配置信息
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeRequests()
+                .anyRequest().permitAll()
+                .and().logout().permitAll();
+
+        /*
         http      //禁用baisc和form认证，在AuthController中自己实现认证逻辑
                 .httpBasic().disable()
                 .formLogin().disable()
@@ -108,7 +112,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userService)
                 .key("INTERNAL_SECRET_KEY");
 
-
+*/
     }
 
     @Override

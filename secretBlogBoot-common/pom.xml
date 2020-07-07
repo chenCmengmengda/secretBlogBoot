@@ -111,7 +111,8 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+            <version>${mysql.version}</version>
+            <!--<scope>runtime</scope>-->
         </dependency>
         <!--druid依赖添加-->
         <dependency>
