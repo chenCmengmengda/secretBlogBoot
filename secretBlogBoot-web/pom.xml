@@ -28,7 +28,16 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
     </dependencies>
-
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <url>https://repo.spring.io/snapshot</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <url>https://repo.spring.io/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
     <build>
         <plugins>
             <!-- 解决@xx@无法解析的问题 -->
@@ -46,7 +55,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cn.chenc.blog.BlogAdminApplication</mainClass>
+                    <mainClass>cn.chenc.blog.BlogWebApplication</mainClass>
                     <layout>JAR</layout>
                     <!--构建完整可执行程序，可以直接运行-->
                     <executable>true</executable>
