@@ -66,6 +66,7 @@ mysql 5.7
 #### 部署说明
 执行命令：
 1.mvn package -Dmaven.test.skip=true
+
 2.java -jar 命令运行xxApplication启动类所在工程打包后的jar包文件
 例如 java -jar secretBlogBoot-admin-1.0-SNAPSHOT.jar
 
