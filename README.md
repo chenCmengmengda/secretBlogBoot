@@ -15,11 +15,11 @@ secretBlog的springboot版本
 
 * 权限管理：完备的系统权限管理，包括系统用户，角色，权限，菜单。（完成70%）
 
-* 内容管理：管理系统用户所有文章，包括帖子、博客及文章评论。（开发中，已完成50%）
+* 内容管理：管理系统用户所有文章，包括帖子、博客及文章评论。（已完成50%）
 
 * 文件管理：提供多种方式（本地，七牛，其他OSS）的文件管理和存储方式。（已实现本地存储，可进行新建文件夹、上传文件、重命名、删除）
 
-* 日志管理：用于记录用户对系统的操作。（未完成）
+* 日志管理：用于记录用户对系统的操作。（已完成）
 
 * 代码生成。（已完成）
 
@@ -63,8 +63,11 @@ mysql 5.7
 
 6.登录:secretC  111111
 
-#### 使用说明
-待续
+#### 部署说明
+执行命令：
+1.mvn package -Dmaven.test.skip=true
+2.java -jar 命令运行xxApplication启动类所在工程打包后的jar包文件
+例如 java -jar secretBlogBoot-admin-1.0-SNAPSHOT.jar
 
 #### 联系作者
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1029693356&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1029693356:41" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
