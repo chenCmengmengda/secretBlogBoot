@@ -4,7 +4,7 @@
 ![Maven](https://img.shields.io/badge/Maven-3.6.1-green.svg)
 ![MySQL](https://img.shields.io/badge/MySQL-5.7-green.svg)
 ![Redis](https://img.shields.io/badge/Redis-3.2.100-green.svg)
-[![license](https://img.shields.io/badge/license-GPL%20v3-yellow.svg)](https://gitee.com/secret_C/secretBlogBoot/blob/master/LICENSE)
+[![license](https://img.shields.io/badge/license-Apache%20v2-yellow.svg)](https://gitee.com/secret_C/secretBlogBoot/blob/master/LICENSE)
 
 ---
 
